@@ -9,4 +9,5 @@ public interface OfficeRepository {
     List<OfficeEntity> findById(int office_id);
     List<OfficeEntity> findByAddress_id(int address_id);
     int save(OfficeEntity officeEntity);
+    int saveAndReturnId(OfficeEntity officeEntity);
 }

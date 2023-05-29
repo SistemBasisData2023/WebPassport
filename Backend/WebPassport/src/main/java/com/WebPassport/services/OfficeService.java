@@ -5,8 +5,10 @@ import com.WebPassport.queries.OfficeQuery;
 import com.WebPassport.repositories.OfficeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -39,6 +41,19 @@ public class OfficeService implements OfficeRepository {
     @Override
     public int save(OfficeEntity officeEntity) {
         return jdbcTemplate.update(OfficeQuery.SAVE, officeEntity.address_id, officeEntity.name);
+    }
+
+    @Override
+    public int saveAndReturnId(OfficeEntity officeEntity){
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement statement = con.prepareStatement(OfficeQuery.SAVE, new String[]{"office_id"});
+            statement.setInt(1, officeEntity.address_id);
+            statement.setString(2, officeEntity.name);
+            return statement;
+        }, keyHolder);
+
+        return keyHolder.getKey().intValue();
     }
 
     private OfficeEntity mapRowToOfficeEntity(ResultSet resultSet, int rowNum)

@@ -1,12 +1,16 @@
 package com.WebPassport.services;
 
 import com.WebPassport.entities.DocumentsEntity;
+import com.WebPassport.entities.OfficeEntity;
 import com.WebPassport.queries.DocumentsQuery;
+import com.WebPassport.queries.OfficeQuery;
 import com.WebPassport.repositories.DocumentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +29,19 @@ public class DocumentsService implements DocumentsRepository {
         return jdbcTemplate.update(DocumentsQuery.SAVE,
                 documentsEntity.ktp_files_id,
                 documentsEntity.kk_files_id);
+    }
+
+    @Override
+    public int saveAndReturnId(DocumentsEntity documentsEntity){
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement statement = con.prepareStatement(DocumentsQuery.SAVE, new String[]{"document_id"});
+            statement.setString(1, documentsEntity.ktp_files_id);
+            statement.setString(2, documentsEntity.kk_files_id);
+            return statement;
+        }, keyHolder);
+
+        return keyHolder.getKey().intValue();
     }
 
     @Override

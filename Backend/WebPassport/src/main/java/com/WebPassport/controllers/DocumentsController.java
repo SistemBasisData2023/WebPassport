@@ -1,17 +1,15 @@
 package com.WebPassport.controllers;
 
 import com.WebPassport.entities.DocumentsEntity;
+import com.WebPassport.mapper.ObjectMapper;
 import com.WebPassport.models.Documents;
-import com.WebPassport.models.Files;
 import com.WebPassport.repositories.DocumentsRepository;
 import com.WebPassport.repositories.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +19,17 @@ import java.util.List;
 public class DocumentsController {
     public DocumentsRepository documentsRepository;
     public FileRepository fileRepository;
+    public ObjectMapper objectMapper;
 
     @Autowired
-    public DocumentsController(DocumentsRepository documentsRepository, FileRepository fileRepository){
+    public DocumentsController(DocumentsRepository documentsRepository,
+                               FileRepository fileRepository, ObjectMapper objectMapper){
         this.documentsRepository = documentsRepository;
         this.fileRepository = fileRepository;
+        this.objectMapper = objectMapper;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<?> getDocuments(
             @RequestParam(required = false) Integer document_id
     ){
@@ -43,7 +44,7 @@ public class DocumentsController {
 
             List<Documents> documentsList = new ArrayList<>();
             for (DocumentsEntity documentsEntity : documentsEntities){
-                documentsList.add(mapToDocuments(documentsEntity));
+                documentsList.add(objectMapper.mapToDocuments(documentsEntity));
             }
             return new ResponseEntity<>(documentsList, HttpStatus.OK);
         }catch (Exception e){
@@ -51,10 +52,19 @@ public class DocumentsController {
         }
     }
 
-    public Documents mapToDocuments(DocumentsEntity documentsEntity){
-        Files ktp_files = fileRepository.findById(documentsEntity.ktp_files_id).stream().map(FileController::mapToFiles).toList().get(0);
-        Files kk_files = fileRepository.findById(documentsEntity.kk_files_id).stream().map(FileController::mapToFiles).toList().get(0);
-        return new Documents(documentsEntity.document_id, ktp_files, kk_files);
+    @PostMapping("/create")
+    public ResponseEntity<?> createDocuments(
+            @RequestParam MultipartFile ktp_files,
+            @RequestParam MultipartFile kk_files){
+        try {
+            String ktp_files_id = fileRepository.saveAndReturnId(ktp_files);
+            String kk_files_id = fileRepository.saveAndReturnId(kk_files);
+
+            int document_id = documentsRepository.saveAndReturnId(new DocumentsEntity(ktp_files_id, kk_files_id));
+            return new ResponseEntity<>(document_id, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

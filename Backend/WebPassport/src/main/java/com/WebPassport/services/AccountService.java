@@ -36,6 +36,11 @@ public class AccountService implements AccountRepository {
     }
 
     @Override
+    public List<AccountEntity> findForLogin(String identity, String password) {
+        return jdbcTemplate.query(AccountQuery.FIND_FOR_LOGIN, this::mapRowToAccountEntity, identity,identity, password);
+    }
+
+    @Override
     public int save(AccountEntity accountEntity) {
         return jdbcTemplate.update(
                 AccountQuery.SAVE, accountEntity.username,

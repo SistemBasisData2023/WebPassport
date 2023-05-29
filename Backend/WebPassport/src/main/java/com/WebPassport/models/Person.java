@@ -1,6 +1,8 @@
 package com.WebPassport.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Person {
     public enum Gender{
@@ -13,6 +15,7 @@ public class Person {
     public Date date_of_birth;
     public String place_of_birth;
     public Gender gender;
+    public List<Request> requests = new ArrayList<>();
 
     public Person(
             int person_id,

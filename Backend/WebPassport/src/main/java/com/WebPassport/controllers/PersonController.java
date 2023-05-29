@@ -1,6 +1,7 @@
 package com.WebPassport.controllers;
 
 import com.WebPassport.entities.PersonEntity;
+import com.WebPassport.mapper.ObjectMapper;
 import com.WebPassport.models.Person;
 import com.WebPassport.repositories.AddressRepository;
 import com.WebPassport.repositories.PersonRepository;
@@ -22,11 +23,13 @@ import java.util.List;
 public class PersonController {
     public PersonRepository personRepository;
     public AddressRepository addressRepository;
+    public ObjectMapper objectMapper;
 
     @Autowired
-    public PersonController(PersonRepository personRepository, AddressRepository addressRepository){
+    public PersonController(PersonRepository personRepository, AddressRepository addressRepository, ObjectMapper objectMapper){
         this.personRepository = personRepository;
         this.addressRepository = addressRepository;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/")
@@ -51,31 +54,13 @@ public class PersonController {
             }
             List<Person> personList = new ArrayList<>();
             for (PersonEntity personEntity: personEntityList){
-                personList.add(mapToPerson(personEntity));
+                personList.add(objectMapper.mapToPerson(personEntity));
             }
             return new ResponseEntity<>(personList, HttpStatus.OK);
 
         } catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    public Person mapToPerson(PersonEntity personEntity){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                return new Person(
-                                personEntity.person_id,
-                                addressRepository.findById(personEntity.address_id).get(0),
-                                personEntity.name, personEntity.nik,
-                                sdf.parse(personEntity.date_of_birth),
-                                personEntity.place_of_birth,
-                                Person.Gender.valueOf(personEntity.gender)
-                );
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-
-
     }
 }
 

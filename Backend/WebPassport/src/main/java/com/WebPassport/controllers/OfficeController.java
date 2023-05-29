@@ -1,6 +1,7 @@
 package com.WebPassport.controllers;
 
 import com.WebPassport.entities.OfficeEntity;
+import com.WebPassport.mapper.ObjectMapper;
 import com.WebPassport.models.Address;
 import com.WebPassport.models.Office;
 import com.WebPassport.repositories.AddressRepository;
@@ -18,11 +19,13 @@ import java.util.List;
 public class OfficeController {
     public OfficeRepository officeRepository;
     public AddressRepository addressRepository;
+    public ObjectMapper objectMapper;
 
     @Autowired
-    public OfficeController(OfficeRepository officeRepository, AddressRepository addressRepository){
+    public OfficeController(OfficeRepository officeRepository, AddressRepository addressRepository, ObjectMapper objectMapper){
         this.officeRepository = officeRepository;
         this.addressRepository = addressRepository;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/")
@@ -44,10 +47,7 @@ public class OfficeController {
             }
             List<Office> officeList = new ArrayList<>();
             for(OfficeEntity officeEntity: officeEntityList){
-                officeList.add(new Office(
-                        officeEntity.office_id,
-                        addressRepository.findById(officeEntity.address_id).get(0),
-                        officeEntity.name));
+                officeList.add(objectMapper.mapToOffice(officeEntity));
             }
 
             return new ResponseEntity<>(officeList, HttpStatus.OK);
@@ -70,8 +70,8 @@ public class OfficeController {
             Address _address = new Address(address_line, subDistrict, city, province, postCode);
             addressRepository.save(_address);
 
-            int rows = officeRepository.save(new OfficeEntity(addressRepository.findByAddress_line(_address.address_line).get(0).getAddress_id(),name));
-            return new ResponseEntity<>("Create "+rows+" Office", HttpStatus.CREATED);
+            int office_id = officeRepository.saveAndReturnId(new OfficeEntity(addressRepository.findByAddress_line(_address.address_line).get(0).getAddress_id(),name));
+            return new ResponseEntity<>("Create "+office_id+" Office", HttpStatus.CREATED);
 
         } catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);

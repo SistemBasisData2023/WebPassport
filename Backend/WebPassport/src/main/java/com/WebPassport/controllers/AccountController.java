@@ -1,9 +1,8 @@
 package com.WebPassport.controllers;
 
 import com.WebPassport.entities.AccountEntity;
-import com.WebPassport.entities.PersonEntity;
+import com.WebPassport.mapper.ObjectMapper;
 import com.WebPassport.models.Account;
-import com.WebPassport.models.Person;
 import com.WebPassport.repositories.AccountRepository;
 import com.WebPassport.repositories.AddressRepository;
 import com.WebPassport.repositories.PersonRepository;
@@ -16,8 +15,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +24,15 @@ public class AccountController {
     public AccountRepository accountRepository;
     public PersonRepository personRepository;
     public AddressRepository addressRepository;
+    public ObjectMapper objectMapper;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository, PersonRepository personRepository, AddressRepository addressRepository){
+    public AccountController(AccountRepository accountRepository, PersonRepository personRepository,
+                             AddressRepository addressRepository, ObjectMapper objectMapper){
         this.accountRepository = accountRepository;
         this.personRepository = personRepository;
         this.addressRepository = addressRepository;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/")
@@ -47,13 +47,54 @@ public class AccountController {
             }
             List<Account> accountList = new ArrayList<>();
             for(AccountEntity accountEntity : accountEntityList){
-                accountList.add(mapToAccount(accountEntity));
+                accountList.add(objectMapper.mapToAccount(accountEntity));
             }
 
             return new ResponseEntity<>(accountList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginAccount(
+            @RequestParam(required = false) String identity,
+            @RequestParam String password
+    ){
+        String encryptedPass = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            BigInteger bigInteger = new BigInteger(1, bytes);
+            StringBuilder sb = new StringBuilder(bigInteger.toString(16));
+            while(sb.length() < 64){
+                sb.insert(0, '0');
+            }
+            encryptedPass = sb.toString();
+        } catch (NoSuchAlgorithmException noSuchAlgorithmException){
+            noSuchAlgorithmException.printStackTrace();
+        }
+        List<AccountEntity> accountEntityList = new ArrayList<>();
+        List<Account> accountList = new ArrayList<>();
+        try{
+            if(identity!=null){
+                accountEntityList.addAll(accountRepository.findForLogin(identity,encryptedPass));
+                for(AccountEntity accountEntity : accountEntityList){
+                    accountList.add(objectMapper.mapToAccount(accountEntity));
+                }
+            }
+            else {
+                return new ResponseEntity<>("Username or Email Expected", HttpStatus.METHOD_NOT_ALLOWED);
+            }
+            if (accountList.isEmpty())
+                return new ResponseEntity<>(accountList, HttpStatus.NO_CONTENT);
+
+            return new ResponseEntity<>(accountList, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PostMapping("/register")
@@ -66,9 +107,7 @@ public class AccountController {
         List<AccountEntity> accountEntityList = new ArrayList<>(accountRepository.findAllAccount());
         List<Account> accountList = new ArrayList<>();
         for(AccountEntity accountEntity : accountEntityList){
-            accountList.add(new Account(
-                    accountEntity.account_id, accountEntity.username,
-                    accountEntity.email, accountEntity.phoneNumber, accountEntity.password));
+            accountList.add(objectMapper.mapToAccount(accountEntity));
         }
         if(!username.isBlank()){
             if(Account.validate(email, phoneNumber, password)){
@@ -102,33 +141,6 @@ public class AccountController {
             return new ResponseEntity<>("REGEX FAIL.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Unexpected Error Occurred!!", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    public Account mapToAccount(AccountEntity accountEntity){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Account account =  new Account(accountEntity.account_id,
-                accountEntity.username, accountEntity.email,
-                accountEntity.phoneNumber, accountEntity.password);
-        List<PersonEntity> personEntityList = new ArrayList<>(personRepository.findByAccount_id(account.getAccount_id()));
-
-        List<Person> personList = new ArrayList<>();
-        for(PersonEntity personEntity : personEntityList){
-            try {
-                personList.add(new Person(
-                                personEntity.person_id,
-                                addressRepository.findById(personEntity.address_id).get(0),
-                                personEntity.name, personEntity.nik,
-                                sdf.parse(personEntity.date_of_birth),
-                                personEntity.place_of_birth,
-                                Person.Gender.valueOf(personEntity.gender)
-                        )
-                );
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        account.persons = personList;
-        return account;
     }
 
 }

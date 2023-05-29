@@ -1,10 +1,5 @@
 package com.WebPassport.entities;
 
-import com.WebPassport.models.Person;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class PersonEntity {
     public int person_id;
     public int account_id;

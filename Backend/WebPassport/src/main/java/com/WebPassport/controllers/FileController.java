@@ -38,9 +38,9 @@ public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file")MultipartFile file){
         try {
-            fileRepository.save(file);
+            String files_id =  fileRepository.saveAndReturnId(file);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(String.format("File uploaded successfully: %s", file.getOriginalFilename()));
+                    .body(String.format("File uploaded successfully: %s", files_id));
         }catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

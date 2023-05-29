@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface FileRepository {
     int save(MultipartFile file) throws IOException;
+    String saveAndReturnId(MultipartFile file) throws IOException;
     List<FileEntity> findById(String files_id);
     List<FileEntity> findAllFiles();
 }
