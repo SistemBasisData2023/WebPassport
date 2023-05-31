@@ -1,4 +1,5 @@
 CREATE TYPE Gender AS ENUM('MALE', 'FEMALE');
+CREATE TYPE Status AS ENUM('ACCEPTED', 'DECLINED', 'PENDING');
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
@@ -53,7 +54,7 @@ CREATE SEQUENCE IF NOT EXISTS documents_id_seq AS integer
 
 
 CREATE TABLE IF NOT EXISTS Account(
-    account_id int NOT NULL,
+    account_id int DEFAULT nextval('account_id_seq') PRIMARY KEY,
     username varchar(100) NOT NULL,
     email varchar(100) NOT NULL,
     phone_number varchar(20) NOT NULL,
@@ -61,7 +62,7 @@ CREATE TABLE IF NOT EXISTS Account(
     );
 
 CREATE TABLE IF NOT EXISTS Admin(
-    admin_id int NOT NULL,
+    admin_id int DEFAULT nextval('admin_id_seq') PRIMARY KEY,
     username varchar(100) NOT NULL,
     email varchar(100) NOT NULL,
     phone_number varchar(20) NOT NULL,
@@ -69,7 +70,7 @@ CREATE TABLE IF NOT EXISTS Admin(
 );
 
 CREATE TABLE IF NOT EXISTS Address(
-    address_id int NOT NULL,
+    address_id int DEFAULT nextval('address_id_seq') PRIMARY KEY,
     address_line text NOT NULL,
     sub_district text NOT NULL,
     city text NOT NULL,
@@ -78,9 +79,9 @@ CREATE TABLE IF NOT EXISTS Address(
 );
 
 CREATE TABLE IF NOT EXISTS Person(
-    person_id int NOT NULL,
-    account_id int NOT NULL,
-    address_id int NOT NULL,
+    person_id int DEFAULT nextval('person_id_seq') PRIMARY KEY,
+    account_id int NOT NULL REFERENCES Account(account_id),
+    address_id int NOT NULL REFERENCES Address(address_id),
     name varchar(100) NOT NULL,
     NIK varchar(20) NOT NULL,
     date_of_birth date NOT NULL,
@@ -89,22 +90,13 @@ CREATE TABLE IF NOT EXISTS Person(
     );
 
 CREATE TABLE IF NOT EXISTS Office(
-    office_id int NOT NULL,
-    address_id int NOT NULL,
+    office_id int DEFAULT nextval('office_id_seq') PRIMARY KEY,
+    address_id int NOT NULL REFERENCES Address(address_id),
     name varchar(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Request(
-    request_id int NOT NULL,
-    document_id int,
-    office_id int,
-    person_id int,
-    schedule date NOT NULL,
-    "timestamp" timestamp NOT NULL DEFAULT now()
-);
-
 CREATE TABLE IF NOT EXISTS Files(
-    files_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    files_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     content_type text,
     data bytea,
     name text,
@@ -112,27 +104,17 @@ CREATE TABLE IF NOT EXISTS Files(
 );
 
 CREATE TABLE IF NOT EXISTS Documents(
-  document_id int NOT NULL,
-  ktp_files_id uuid NOT NULL,
-  kk_files_id uuid
+  document_id int DEFAULT nextval('documents_id_seq') PRIMARY KEY,
+  ktp_files_id uuid REFERENCES Files(files_id),
+  kk_files_id uuid REFERENCES Files(files_id)
 );
 
-
-ALTER SEQUENCE account_id_seq OWNED BY Account.account_id;
-ALTER SEQUENCE admin_id_seq OWNED BY Admin.admin_id;
-ALTER SEQUENCE address_id_seq OWNED BY Address.address_id;
-ALTER SEQUENCE person_id_seq OWNED BY Person.person_id;
-ALTER SEQUENCE office_id_seq OWNED BY Office.office_id;
-ALTER SEQUENCE request_id_seq OWNED BY Request.request_id;
-ALTER SEQUENCE documents_id_seq OWNED BY Documents.document_id;
-
-
-ALTER TABLE account ALTER COLUMN account_id SET DEFAULT nextval('account_id_seq'::regclass);
-ALTER TABLE admin ALTER COLUMN admin_id SET DEFAULT nextval('admin_id_seq'::regclass);
-ALTER TABLE address ALTER COLUMN address_id SET DEFAULT nextval('address_id_seq'::regclass);
-ALTER TABLE person ALTER COLUMN person_id SET DEFAULT nextval('person_id_seq'::regclass);
-ALTER TABLE office ALTER COLUMN office_id SET DEFAULT nextval('office_id_seq'::regclass);
-ALTER TABLE request ALTER COLUMN request_id SET DEFAULT nextval('request_id_seq'::regclass);
-ALTER TABLE documents ALTER COLUMN document_id SET DEFAULT nextval('documents_id_seq'::regclass);
-
-ALTER TABLE files ALTER COLUMN files_id SET DEFAULT uuid_generate_v4();
+CREATE TABLE IF NOT EXISTS Request(
+    request_id int DEFAULT nextval('request_id_seq') PRIMARY KEY,
+    document_id int REFERENCES Documents(document_id),
+    office_id int REFERENCES Office(office_id),
+    person_id int NOT NULL REFERENCES Person(person_id),
+    schedule date NOT NULL,
+    "timestamp" timestamp NOT NULL DEFAULT now(),
+    status Status NOT NULL
+);
