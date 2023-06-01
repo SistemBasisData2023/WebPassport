@@ -3,9 +3,12 @@ package com.WebPassport.mapper;
 import com.WebPassport.entities.*;
 import com.WebPassport.models.*;
 
+import java.text.ParseException;
+
 public interface ObjectMapper {
-    public Person mapToPerson(PersonEntity personEntity);
-    public Account mapToAccount(AccountEntity accountEntity);
-    public Office mapToOffice(OfficeEntity officeEntity);
-    public Documents mapToDocuments(DocumentsEntity documentsEntity);
+    Person mapToPerson(PersonEntity personEntity);
+    Account mapToAccount(AccountEntity accountEntity);
+    Office mapToOffice(OfficeEntity officeEntity);
+    Documents mapToDocuments(DocumentsEntity documentsEntity);
+    Request mapToRequest(RequestEntity requestEntity) throws ParseException;
 }

@@ -10,4 +10,7 @@ public interface OfficeRepository {
     List<OfficeEntity> findByAddress_id(int address_id);
     int save(OfficeEntity officeEntity);
     int saveAndReturnId(OfficeEntity officeEntity);
+    OfficeEntity saveAndReturnOffice(OfficeEntity officeEntity);
+    OfficeEntity updateAndReturnOffice(int office_id, String name);
+    int delete(int office_id);
 }

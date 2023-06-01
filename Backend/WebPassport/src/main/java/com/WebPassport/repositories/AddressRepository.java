@@ -12,4 +12,8 @@ public interface AddressRepository {
     List<Address> findByProvince(String Province);
     List<Address> findById(int address_id);
     int save(Address address);
+    int saveAndReturnId(Address address);
+    Address saveAndReturnAddress(Address address);
+    Address updateAndReturnAddress(int address_id, Address address);
+    int delete(int address_id);
 }

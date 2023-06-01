@@ -12,4 +12,7 @@ public interface RequestRepository {
     List<RequestEntity> findByPerson_id(int person_id);
     int save(RequestEntity requestEntity);
     int saveAndReturnId(RequestEntity requestEntity);
+    RequestEntity saveAndReturnRequestEntity(RequestEntity requestEntity);
+    RequestEntity updateAndReturnRequestEntity(int request_id, String schedule, String status);
+    int delete(int request_id);
 }

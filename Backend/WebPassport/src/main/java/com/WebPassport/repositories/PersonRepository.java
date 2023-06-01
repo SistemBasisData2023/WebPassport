@@ -10,4 +10,7 @@ public interface PersonRepository {
     List<PersonEntity> findByAccount_id(int account_id);
     List<PersonEntity> findByAddress_id(int address_id);
     int save(PersonEntity personEntity);
+    PersonEntity updateAndReturnPersonEntity(int person_id, PersonEntity personEntity);
+    int delete(int person_id);
+    int deleteByAccount_id(int account_id);
 }

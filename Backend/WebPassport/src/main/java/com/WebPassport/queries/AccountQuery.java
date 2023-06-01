@@ -8,4 +8,12 @@ public class AccountQuery {
     public static final String SAVE = "INSERT INTO Account"
             + " (account_id, username, email, phone_number, password)"
             + " VALUES (DEFAULT, ?, ?, ?, ?)";
+    public static final String SAVE_AND_RETURN_ACCOUNT = "INSERT INTO Account"
+            + " (account_id, username, email, phone_number, password)"
+            + " VALUES (DEFAULT, ?, ?, ?, ?) RETURNING *";
+    public static final String UPDATE_AND_RETURN_ACCOUNT = "UPDATE Account SET " +
+            "username = ?, email = ?, phone_number = ?, password = ? " +
+            "WHERE account_id = ? RETURNING *";
+    public static final String DELETE = "DELETE FROM Account WHERE account_id = ? ";
+
 }

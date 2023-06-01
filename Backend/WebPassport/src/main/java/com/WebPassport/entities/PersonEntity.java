@@ -41,4 +41,14 @@ public class PersonEntity {
         this.gender = gender;
     }
 
+    public PersonEntity(
+            String name, String nik,
+            String date_of_birth, String place_of_birth, String gender){
+        this.name = name;
+        this.nik = nik;
+        this.date_of_birth = date_of_birth;
+        this.place_of_birth = place_of_birth;
+        this.gender = gender;
+    }
+
 }

@@ -11,4 +11,11 @@ public class AddressQuery {
     public static final String SAVE = "INSERT INTO Address"
             + " (address_id, address_line, sub_district, city, province, postcode)"
             + " VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+    public static final String SAVE_AND_RETURN_ADDRESS = "INSERT INTO Address"
+            + " (address_id, address_line, sub_district, city, province, postcode)"
+            + " VALUES (DEFAULT, ?, ?, ?, ?, ?) RETURNING *";
+    public static final String UPDATE_AND_RETURN_ADDRESS = "UPDATE Address SET " +
+            "address_line = ?, sub_district = ?, city = ?, province = ?, postcode = ? " +
+            "WHERE address_id = ? RETURNING *";
+    public static final String DELETE = "DELETE FROM Address WHERE address_id = ?";
 }

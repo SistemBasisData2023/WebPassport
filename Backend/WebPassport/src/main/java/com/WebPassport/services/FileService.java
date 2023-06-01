@@ -60,6 +60,18 @@ public class FileService implements FileRepository {
     }
 
     @Override
+    public FileEntity saveAndReturnFileEntity(MultipartFile file) throws IOException {
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.name = StringUtils.cleanPath(file.getOriginalFilename());
+        fileEntity.contentType = file.getContentType();
+        fileEntity.data = file.getBytes();
+        fileEntity.size = file.getSize();
+
+        return jdbcTemplate.query(FileQuery.SAVE_AND_RETURN_FILE, this::mapToFileEntity,
+                fileEntity.contentType, fileEntity.data, fileEntity.name, fileEntity.size).get(0);
+    }
+
+    @Override
     public List<FileEntity> findById(String files_id) {
         return jdbcTemplate.query(FileQuery.FIND_BY_ID, this::mapToFileEntity, files_id);
     }
@@ -67,6 +79,24 @@ public class FileService implements FileRepository {
     @Override
     public List<FileEntity> findAllFiles() {
         return jdbcTemplate.query(FileQuery.FIND_ALL, this::mapToFileEntity);
+    }
+
+    @Override
+    public FileEntity updateAndReturnFileEntity(String files_id, MultipartFile file) throws IOException {
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.name = StringUtils.cleanPath(file.getOriginalFilename());
+        fileEntity.contentType = file.getContentType();
+        fileEntity.data = file.getBytes();
+        fileEntity.size = file.getSize();
+
+        return jdbcTemplate.query(FileQuery.UPDATE_AND_RETURN_FILE, this::mapToFileEntity,
+                fileEntity.contentType, fileEntity.data, fileEntity.name, fileEntity.size,
+                files_id).get(0);
+    }
+
+    @Override
+    public int delete(String files_id) {
+        return jdbcTemplate.update(FileQuery.DELETE, files_id);
     }
 
     private FileEntity mapToFileEntity(ResultSet resultSet, int rowNum)

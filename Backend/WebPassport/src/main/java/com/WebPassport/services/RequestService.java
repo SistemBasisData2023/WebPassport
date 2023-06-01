@@ -50,7 +50,7 @@ public class RequestService implements RequestRepository {
     @Override
     public int save(RequestEntity requestEntity) {
         return jdbcTemplate.update(RequestQuery.SAVE, requestEntity.document_id,
-                requestEntity.office_id, requestEntity.person_id, requestEntity.schedule);
+                requestEntity.office_id, requestEntity.person_id, requestEntity.schedule, requestEntity.status);
     }
 
     @Override
@@ -67,6 +67,24 @@ public class RequestService implements RequestRepository {
         return keyHolder.getKey().intValue();
     }
 
+    @Override
+    public RequestEntity saveAndReturnRequestEntity(RequestEntity requestEntity) {
+        return jdbcTemplate.query(RequestQuery.SAVE_AND_RETURN_REQUEST_ENTITY, this::mapRowToRequestEntity,
+                requestEntity.document_id, requestEntity.office_id,
+                requestEntity.person_id, requestEntity.schedule, requestEntity.status).get(0);
+    }
+
+    @Override
+    public RequestEntity updateAndReturnRequestEntity(int request_id, String schedule, String status) {
+        return jdbcTemplate.query(RequestQuery.UPDATE_AND_RETURN_REQUEST_ENTITY, this::mapRowToRequestEntity,
+                schedule, status, request_id).get(0);
+    }
+
+    @Override
+    public int delete(int request_id) {
+        return jdbcTemplate.update(RequestQuery.DELETE, request_id);
+    }
+
     private RequestEntity mapRowToRequestEntity(ResultSet resultSet, int rowNum)
         throws SQLException{
         return new RequestEntity(resultSet.getInt("request_id"),
@@ -74,6 +92,7 @@ public class RequestService implements RequestRepository {
                 resultSet.getInt("office_id"),
                 resultSet.getInt("person_id"),
                 resultSet.getString("schedule"),
-                resultSet.getString("timestamp"));
+                resultSet.getString("timestamp"),
+                resultSet.getString("status"));
     }
 }

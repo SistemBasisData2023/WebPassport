@@ -56,6 +56,23 @@ public class OfficeService implements OfficeRepository {
         return keyHolder.getKey().intValue();
     }
 
+    @Override
+    public OfficeEntity saveAndReturnOffice(OfficeEntity officeEntity) {
+        return jdbcTemplate.query(OfficeQuery.SAVE_AND_RETURN_OFFICE, this::mapRowToOfficeEntity,
+                officeEntity.address_id, officeEntity.name).get(0);
+    }
+
+    @Override
+    public OfficeEntity updateAndReturnOffice(int office_id, String name) {
+        return jdbcTemplate.query(OfficeQuery.UPDATE_AND_RETURN_OFFICE, this::mapRowToOfficeEntity,
+                name, office_id).get(0);
+    }
+
+    @Override
+    public int delete(int office_id) {
+        return jdbcTemplate.update(OfficeQuery.DELETE, office_id);
+    }
+
     private OfficeEntity mapRowToOfficeEntity(ResultSet resultSet, int rowNum)
             throws SQLException {
 

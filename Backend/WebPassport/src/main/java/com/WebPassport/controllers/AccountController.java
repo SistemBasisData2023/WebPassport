@@ -1,8 +1,10 @@
 package com.WebPassport.controllers;
 
 import com.WebPassport.entities.AccountEntity;
+import com.WebPassport.entities.PersonEntity;
 import com.WebPassport.mapper.ObjectMapper;
 import com.WebPassport.models.Account;
+import com.WebPassport.models.Address;
 import com.WebPassport.repositories.AccountRepository;
 import com.WebPassport.repositories.AddressRepository;
 import com.WebPassport.repositories.PersonRepository;
@@ -15,10 +17,12 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/account")
 public class AccountController {
     public AccountRepository accountRepository;
@@ -131,9 +135,8 @@ public class AccountController {
                 }
                 try {
                     AccountEntity _accountEntity = new AccountEntity(username, email, phoneNumber, encryptedPass);
-                    accountRepository.save(_accountEntity);
-                    AccountEntity result = accountRepository.findByUsername(_accountEntity.username).get(0);
-                    return new ResponseEntity<>(result, HttpStatus.CREATED);
+                    AccountEntity account_id = accountRepository.saveAndReturnAccountEntity(_accountEntity).get(0);
+                    return new ResponseEntity<>(account_id, HttpStatus.CREATED);
                 } catch (Exception e) {
                     return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
                 }
@@ -141,6 +144,85 @@ public class AccountController {
             return new ResponseEntity<>("REGEX FAIL.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Unexpected Error Occurred!!", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/{account_id}/addperson")
+    public ResponseEntity<?> addPerson(@PathVariable int account_id,
+                                       @RequestParam String name,
+                                       @RequestParam String nik,
+                                       @RequestParam String date_of_birth,
+                                       @RequestParam String place_of_birth,
+                                       @RequestParam String gender,
+                                       @RequestParam String address_line,
+                                       @RequestParam String subDistrict,
+                                       @RequestParam String city,
+                                       @RequestParam String province,
+                                       @RequestParam String postCode){
+
+        try {
+            int address_id = addressRepository.saveAndReturnId(new Address(address_line, subDistrict, city, province, postCode));
+            int rows = personRepository.save(new PersonEntity(account_id,address_id,name,nik,date_of_birth,place_of_birth,gender));
+
+            AccountEntity _accountEntity = accountRepository.findById(account_id);
+            Account _account = objectMapper.mapToAccount(_accountEntity);
+
+            return new ResponseEntity<>(_account, HttpStatus.CREATED);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{account_id}/update")
+    public ResponseEntity<?> updateAccount(
+            @PathVariable int account_id, @RequestParam(required = false) String username,
+            @RequestParam(required = false) String email, @RequestParam(required = false) String phoneNumber,
+            @RequestParam(required = false) String password){
+        try{
+            String encryptedPass = null;
+            if(password != null){
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA-256");
+                    byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+                    BigInteger bigInteger = new BigInteger(1, bytes);
+                    StringBuilder sb = new StringBuilder(bigInteger.toString(16));
+                    while(sb.length() < 64){
+                        sb.insert(0, '0');
+                    }
+                    encryptedPass = sb.toString();
+                } catch (NoSuchAlgorithmException e){
+                    e.printStackTrace();
+                }
+            }
+            AccountEntity currentAccount = accountRepository.findById(account_id);
+            if (currentAccount == null){
+                return new ResponseEntity<>("Account Not Found", HttpStatus.NOT_FOUND);
+            }
+            AccountEntity accountEntity = new AccountEntity(
+                    (username == null ? currentAccount.username : username),
+                    (email == null ? currentAccount.email : email),
+                    (phoneNumber == null ? currentAccount.phoneNumber : phoneNumber),
+                    (password == null ? currentAccount.password : encryptedPass));
+            AccountEntity _accountEntity = accountRepository.updateAndReturnAccountEntity(account_id, accountEntity);
+            return  new ResponseEntity<>(_accountEntity, HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{account_id}/delete")
+    public ResponseEntity<?> deleteAccount(@PathVariable int account_id){
+        try{
+            List<PersonEntity> personEntityList = personRepository.findByAccount_id(account_id);
+            for (PersonEntity personEntity : personEntityList){
+                addressRepository.delete(personEntity.address_id);
+            }
+            int personRow = personRepository.deleteByAccount_id(account_id);
+            int rows = accountRepository.delete(account_id);
+            return new ResponseEntity<>("Delete "+rows+ " account with "+personRow+" person assigned", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

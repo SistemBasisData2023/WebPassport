@@ -5,8 +5,10 @@ import com.WebPassport.queries.AddressQuery;
 import com.WebPassport.repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -55,6 +57,40 @@ public class AddressService implements AddressRepository {
         return jdbcTemplate.update(AddressQuery.SAVE,
                 address.address_line, address.subDistrict,
                 address.city, address.province, address.postCode);
+    }
+
+    @Override
+    public int saveAndReturnId(Address address) {
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement statement = con.prepareStatement(AddressQuery.SAVE, new String[]{"address_id"});
+            statement.setString(1, address.address_line);
+            statement.setString(2, address.subDistrict);
+            statement.setString(3, address.city);
+            statement.setString(4, address.province);
+            statement.setString(5, address.postCode);
+            return statement;
+        },keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+    @Override
+    public Address saveAndReturnAddress(Address address) {
+        return jdbcTemplate.query(AddressQuery.SAVE_AND_RETURN_ADDRESS, this::mapRowToAddress,
+                address.address_line, address.subDistrict, address.city,
+                address.province, address.postCode).get(0);
+    }
+
+    @Override
+    public Address updateAndReturnAddress(int address_id, Address address) {
+        return jdbcTemplate.query(AddressQuery.UPDATE_AND_RETURN_ADDRESS, this::mapRowToAddress,
+                address.address_line, address.subDistrict, address.city,
+                address.province, address.postCode, address_id).get(0);
+    }
+
+    @Override
+    public int delete(int address_id) {
+        return jdbcTemplate.update(AddressQuery.DELETE, address_id);
     }
 
     private Address mapRowToAddress(ResultSet resultSet, int rowNum)

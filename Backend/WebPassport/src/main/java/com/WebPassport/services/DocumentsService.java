@@ -45,6 +45,12 @@ public class DocumentsService implements DocumentsRepository {
     }
 
     @Override
+    public DocumentsEntity saveAndReturnDocuments(DocumentsEntity documentsEntity) {
+        return jdbcTemplate.query(DocumentsQuery.SAVE_AND_RETURN_DOCUMENTS, this::mapToDocumentsEntity,
+                documentsEntity.ktp_files_id, documentsEntity.kk_files_id).get(0);
+    }
+
+    @Override
     public List<DocumentsEntity> findAllDocuments() {
         return jdbcTemplate.query(DocumentsQuery.FIND_ALL, this::mapToDocumentsEntity);
     }
@@ -52,6 +58,11 @@ public class DocumentsService implements DocumentsRepository {
     @Override
     public List<DocumentsEntity> findByDocument_id(int document_id) {
         return jdbcTemplate.query(DocumentsQuery.FIND_BY_ID, this::mapToDocumentsEntity, document_id);
+    }
+
+    @Override
+    public int delete(int document_id) {
+        return jdbcTemplate.update(DocumentsQuery.DELETE, document_id);
     }
 
     public DocumentsEntity mapToDocumentsEntity(ResultSet resultSet, int rowNum)

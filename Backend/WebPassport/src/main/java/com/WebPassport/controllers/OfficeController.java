@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/office")
 public class OfficeController {
     public OfficeRepository officeRepository;
@@ -70,9 +71,38 @@ public class OfficeController {
             Address _address = new Address(address_line, subDistrict, city, province, postCode);
             addressRepository.save(_address);
 
-            int office_id = officeRepository.saveAndReturnId(new OfficeEntity(addressRepository.findByAddress_line(_address.address_line).get(0).getAddress_id(),name));
-            return new ResponseEntity<>("Create "+office_id+" Office", HttpStatus.CREATED);
+            OfficeEntity officeEntity = officeRepository.saveAndReturnOffice(
+                    new OfficeEntity(
+                            addressRepository.findByAddress_line(_address.address_line).get(0).getAddress_id(),
+                            name));
+            Office office = objectMapper.mapToOffice(officeEntity);
+            return new ResponseEntity<>(office, HttpStatus.CREATED);
 
+        } catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{office_id}/update")
+    public ResponseEntity<?> updateOffice(@PathVariable int office_id, String name){
+        try {
+            OfficeEntity officeEntity = officeRepository.updateAndReturnOffice(office_id, name);
+            return new ResponseEntity<>(officeEntity, HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @DeleteMapping("/{office_id}/delete")
+    public ResponseEntity<?> deleteOffice(@PathVariable int office_id){
+        try {
+            List<OfficeEntity> officeEntityList = new ArrayList<>(officeRepository.findById(office_id));
+            if(officeEntityList.isEmpty()){
+                return new ResponseEntity<>("Office Not Found", HttpStatus.NO_CONTENT);
+            }
+            OfficeEntity officeEntity = officeEntityList.get(0);
+            int addressRows = addressRepository.delete(officeEntity.address_id);
+            int rows = officeRepository.delete(office_id);
+            return new ResponseEntity<>("Delete "+rows+" Office and "+addressRows+" Address", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -26,8 +27,9 @@ public class AccountService implements AccountRepository {
     }
 
     @Override
-    public List<AccountEntity> findById(int account_id) {
-        return jdbcTemplate.query(AccountQuery.FIND_BY_ID, this::mapRowToAccountEntity);
+    public AccountEntity findById(int account_id) {
+        List<AccountEntity> accountEntityList = new ArrayList<>(jdbcTemplate.query(AccountQuery.FIND_BY_ID, this::mapRowToAccountEntity, account_id));
+        return (accountEntityList.isEmpty() ? null : accountEntityList.get(0));
     }
 
     @Override
@@ -48,6 +50,24 @@ public class AccountService implements AccountRepository {
                 accountEntity.password);
     }
 
+    @Override
+    public List<AccountEntity> saveAndReturnAccountEntity(AccountEntity accountEntity) {
+        return jdbcTemplate.query(AccountQuery.SAVE_AND_RETURN_ACCOUNT,this::mapRowToAccountEntity ,accountEntity.username,
+                accountEntity.email, accountEntity.phoneNumber,
+                accountEntity.password);
+    }
+
+    @Override
+    public AccountEntity updateAndReturnAccountEntity(int account_id, AccountEntity accountEntity) {
+        return jdbcTemplate.query(AccountQuery.UPDATE_AND_RETURN_ACCOUNT, this::mapRowToAccountEntity,
+                accountEntity.username, accountEntity.email, accountEntity.phoneNumber,
+                accountEntity.password, account_id).get(0);
+    }
+
+    @Override
+    public int delete(int account_id) {
+        return jdbcTemplate.update(AccountQuery.DELETE, account_id);
+    }
 
     private AccountEntity mapRowToAccountEntity(ResultSet resultSet, int rowNum)
             throws SQLException {

@@ -47,6 +47,23 @@ public class PersonService implements PersonRepository {
                 personEntity.date_of_birth, personEntity.place_of_birth, personEntity.gender);
     }
 
+    @Override
+    public PersonEntity updateAndReturnPersonEntity(int person_id, PersonEntity personEntity) {
+        return jdbcTemplate.query(PersonQuery.UPDATE_AND_RETURN_PERSON, this::mapRowToPersonEntity,
+                personEntity.name, personEntity.nik, personEntity.date_of_birth,
+                personEntity.place_of_birth, personEntity.gender, person_id).get(0);
+    }
+
+    @Override
+    public int delete(int person_id) {
+        return jdbcTemplate.update(PersonQuery.DELETE, person_id);
+    }
+
+    @Override
+    public int deleteByAccount_id(int account_id) {
+        return jdbcTemplate.update(PersonQuery.DELETE_BY_ACCOUNT_ID, account_id);
+    }
+
     private PersonEntity mapRowToPersonEntity(ResultSet resultSet, int rowNum)
             throws SQLException {
 

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/documents")
 public class DocumentsController {
     public DocumentsRepository documentsRepository;
@@ -54,14 +55,33 @@ public class DocumentsController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createDocuments(
-            @RequestParam MultipartFile ktp_files,
-            @RequestParam MultipartFile kk_files){
+            @RequestParam("ktp_files") MultipartFile ktp_files,
+            @RequestParam("kk_files") MultipartFile kk_files){
         try {
             String ktp_files_id = fileRepository.saveAndReturnId(ktp_files);
             String kk_files_id = fileRepository.saveAndReturnId(kk_files);
 
-            int document_id = documentsRepository.saveAndReturnId(new DocumentsEntity(ktp_files_id, kk_files_id));
-            return new ResponseEntity<>(document_id, HttpStatus.CREATED);
+            DocumentsEntity documentsEntity = documentsRepository.saveAndReturnDocuments(new DocumentsEntity(ktp_files_id, kk_files_id));
+            Documents documents = objectMapper.mapToDocuments(documentsEntity);
+            return new ResponseEntity<>(documents, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{document_id}/delete")
+    public ResponseEntity<?> deleteDocuments(@PathVariable int document_id){
+        try{
+            List<DocumentsEntity> documentsEntities = new ArrayList<>(documentsRepository.findByDocument_id(document_id));
+            if (documentsEntities.isEmpty()){
+                return new ResponseEntity<>("Documents Not Found", HttpStatus.NO_CONTENT);
+            }
+            DocumentsEntity documentsEntity = documentsEntities.get(0);
+            fileRepository.delete(documentsEntity.ktp_files_id);
+            fileRepository.delete(documentsEntity.kk_files_id);
+            documentsRepository.delete(document_id);
+            return new ResponseEntity<>("Delete document with files ID " + documentsEntity.ktp_files_id +
+                    " and " + documentsEntity.kk_files_id, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

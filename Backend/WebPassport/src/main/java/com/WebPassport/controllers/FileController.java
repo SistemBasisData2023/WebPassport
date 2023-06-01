@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/files")
 public class FileController {
     public FileRepository fileRepository;
@@ -24,6 +25,7 @@ public class FileController {
     public FileController(FileRepository fileRepository){
         this.fileRepository = fileRepository;
     }
+
 
     @GetMapping("/")
     public ResponseEntity<?> getFiles(@RequestParam(required = false) String files_id){

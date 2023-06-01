@@ -1,9 +1,13 @@
 package com.WebPassport.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Office {
     private int office_id;
     public String name;
     public Address address;
+    public List<Request> requests = new ArrayList<>();
 
     public Office(int office_id, Address address, String name){
         this.office_id = office_id;
