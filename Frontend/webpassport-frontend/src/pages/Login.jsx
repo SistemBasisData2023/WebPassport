@@ -1,14 +1,18 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
-import "./login.scss"
+import {useState, useEffect, useContext} from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import hidePassword from "../../assets/icon/visible-off.svg"
-import showPassword from "../../assets/icon/visible-on.svg"
+import "../styles/login.scss"
+import hidePassword from "../assets/icon/visible-off.svg"
+import showPassword from "../assets/icon/visible-on.svg"
+import { AuthContext } from "../context/authContext";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isRevealedPassword, setIsRevealedPassword] = useState(false);
+    const navigate = useNavigate();
+
+    const { loginAccount } = useContext(AuthContext);
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -22,13 +26,17 @@ const Login = () => {
         event.preventDefault();
         // send the username and password to the server for authentication
         try{
-            const response = await axios.post('http://localhost:8080/account/login',{}, 
-            {params: {identity:email, password}})
-            if(response.status === 200){
-                alert("Login success")
-                console.log(response.data);
+            const res = await loginAccount(email, password);
+            if (res.status === 200){
+                alert("Login Success");
+                console.log(res.data);
+                navigate("/")
+            }
+            else{
+                alert("Login Failed")
             }
         } catch(error){
+            alert("Login Failed")
             console.log(error);
         }
     }

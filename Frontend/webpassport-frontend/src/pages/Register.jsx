@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./register.scss"
-import hidePassword from "../../assets/icon/visible-off.svg"
-import showPassword from "../../assets/icon/visible-on.svg"
+import "../styles/register.scss"
+import hidePassword from "../assets/icon/visible-off.svg"
+import showPassword from "../assets/icon/visible-on.svg"
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -11,6 +11,8 @@ const Register = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
     const [password, setPassword] = useState('');
     const [isRevealedPassword, setIsRevealedPassword] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleUsernameChange = (event) =>{
         setUsername(event.target.value);
@@ -37,6 +39,7 @@ const Register = () => {
             if(response.status === 201){
                 alert("Register success");
                 console.log(response.data);
+                navigate("/login")
             }
         } catch(error){
             console.log(error);
