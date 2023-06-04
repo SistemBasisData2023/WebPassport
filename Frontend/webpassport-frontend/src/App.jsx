@@ -53,11 +53,11 @@ function App() {
           element: <Account/>
         },
         {
-          path: "/addperson",
+          path: "/account/:id/addperson",
           element: <AddPerson/>
         },{
-          path: "/addrequest",
-          element: <Request></Request>
+          path: "/account/:id/addrequest",
+          element: <Request/>
         }
       ]
     },

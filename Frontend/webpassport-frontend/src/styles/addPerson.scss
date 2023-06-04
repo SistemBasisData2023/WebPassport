@@ -1,0 +1,28 @@
+.addPerson{
+    padding: 30px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    .person_info{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        span{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .label{
+            width: 120px;
+            font-size: 14px;
+        }
+        input{
+            padding: 3px;
+            width: 220px;
+        }
+        .address_line{
+            width: 580px;
+        }
+    }
+}

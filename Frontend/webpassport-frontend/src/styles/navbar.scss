@@ -3,13 +3,16 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    height: 50px;
+    width: 100vw;
     border-bottom: 2px solid ldightgray;
     position: sticky;
+    overflow-x: hidden;
     top: 0;
     background-color: rgb(40, 82, 122);
     color: white;
     z-index: 999;
+
+
 
     .left {
       display: flex;
@@ -24,6 +27,7 @@
 
       a{
         height: 24px;
+        width: 24px;
       }
 
       .search {
@@ -36,7 +40,7 @@
 
         input {
           border: none;
-          width: 500px;
+          width: 40vw;
           background-color: transparent;
           color: white;
         }
@@ -54,6 +58,11 @@
       align-items: center;
       gap: 20px;
 
+      a{
+        height: 24px;
+        width: 24px;
+      }
+
       .user {
         display: flex;
         align-items: center;
@@ -61,20 +70,17 @@
         font-weight: 500;
         color: white;
 
-        a{
-          height: 24px;
-        }
+        
 
-        img {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
+        
         
       } 
       .user:visited, user:active{
         color: white;
+      }
+      .logout{
+        height: 24px;
+        width: 24px;
       }
 
       .logout:hover{

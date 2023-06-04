@@ -7,12 +7,21 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/authContext";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
 const Navbar = () => {
+  const { currentAccount, logout } = useContext(AuthContext);
+  const [visible, setVisible] = useState(false);
 
-   const { currentAccount, logout } = useContext(AuthContext);
+  const closeDialog = () => {
+    setVisible(false);
+  };
+  const openDialog = () =>{
+    setVisible(true)
+  }
+
   
     return (
     <div className="navbar">
@@ -29,8 +38,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className="right">
-        <span className="logout" onClick={logout}><LogoutIcon /></span>
-        <Link to="/addrequest" style={{ textDecoration: "none", color: 'white' }}>
+        <span className="logout" onClick={openDialog}><LogoutIcon /></span>
+        <Link to={`account/${currentAccount.account_id}/addrequest`} style={{ textDecoration: "none", color: 'white' }}>
           <PostAddIcon />
         </Link>
         <div className="user">
@@ -40,6 +49,14 @@ const Navbar = () => {
           <span>{currentAccount.email}</span>
         </div>
       </div>
+        <Dialog open={visible} onClose={closeDialog}>
+          <DialogTitle>{"Logout"}</DialogTitle>
+          <DialogContentText>{"Do you want to logout?"}</DialogContentText>
+          <DialogActions>
+            <button onClick={logout}>Yes</button>
+            <button onClick={closeDialog}>No</button>
+          </DialogActions>
+        </Dialog>
     </div>
   );
 };
