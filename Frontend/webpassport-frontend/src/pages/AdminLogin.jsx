@@ -4,17 +4,15 @@ import axios from "axios";
 import "../styles/login.scss"
 import hidePassword from "../assets/icon/visible-off.svg"
 import showPassword from "../assets/icon/visible-on.svg"
-import logo from "../assets/icon/logo.svg"
 import { AuthContext } from "../context/authContext";
 
-const Login = () => {
+const AdminLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
     const [isRevealedPassword, setIsRevealedPassword] = useState(false);
     const navigate = useNavigate();
 
-    const { loginAccount } = useContext(AuthContext);
+    const { loginAdmin } = useContext(AuthContext);
 
     useEffect(() =>{
         sessionStorage.clear();
@@ -32,23 +30,18 @@ const Login = () => {
         event.preventDefault();
         // send the username and password to the server for authentication
         try{
-            setLoading(true);
-            const res = await loginAccount(email, password);
+            const res = await loginAdmin(email, password);
             if (res.status === 200){
                 alert("Login Success");
-                setLoading(false);
                 console.log(res.data);
-                navigate("/")
+                navigate("/admin")
             }
             else{
-                alert("Login Failed");
-                console.log(res.data)
-                setLoading(false);
+                alert("Login Failed")
             }
         } catch(error){
-            alert("Login Failed");
+            alert("Login Failed")
             console.log(error);
-            setLoading(false);
         }
     }
 
@@ -56,13 +49,11 @@ const Login = () => {
         <div className="login">
             <div className="card">
                 <div className="left">
-                    <img src={logo} style={{color: "white", width: "60%", filter: "brightness(0) saturate(100%) invert(98%) sepia(5%) saturate(2%) hue-rotate(59deg) brightness(110%) contrast(100%)"}}/>
-                    <p>WebPassport adalah aplikasi yang memudahkan Anda untuk melakukan pemesanan paspor secara online.
-                        
+                    <h1>{"Web Passport (Admin Version)"}</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, voluptate? 
+                        Atque quibusdam omnis aliquam adipisci asperiores nesciunt neque consectetur temporibus! 
+                        Recusandae optio quas doloribus facilis id eligendi, deleniti sit inventore.
                     </p>
-                    <span>Belum punya akun?</span>
-                    <Link to="/register"><button>Registrasi</button></Link>
-                    
                 </div>
                 <div className="right">
                     <h1>Login</h1>
@@ -76,7 +67,7 @@ const Login = () => {
                             src={isRevealedPassword ? hidePassword:showPassword} onClick={() => setIsRevealedPassword(prevState => !prevState)}></img>
                         </div>
                         
-                        <button id="submit_field" type="submit">{loading ? <>Loading...</> : <>Login</>}</button>
+                        <button id="submit_field" type="submit">Login</button>
                     </form>
                 </div>
             </div>
@@ -84,4 +75,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default AdminLogin;

@@ -1,4 +1,40 @@
 .request{
     padding: 30px;
     display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    #button-bottom {
+        width: 200px;
+        padding: 5px;
+        border: none;
+        border-radius: 3px;
+        background-color: rgb(40, 82, 122);
+        color: white;
+        font-weight: bold;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+    #button-bottom:hover{
+        color: white;
+        background-color: rgb(138, 196, 208);
+        transition: background-color, 0.5s;
+    }
+
+    .field{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+    }
+    .label{
+        width: 140px;
+        font-size: 14px;
+    }
+    span{
+        display: flex;
+        flex-direction: column;
+    }
+    .dropdown-container{
+        font-size: 12px;
+    }
 }

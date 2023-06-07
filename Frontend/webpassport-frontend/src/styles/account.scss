@@ -8,14 +8,14 @@
     overflow-y: auto;
 
     button {
-        width: 25%;
+        width: 200px;
         padding: 5px;
         border: none;
         border-radius: 3px;
         background-color: rgb(40, 82, 122);
         color: white;
         font-weight: bold;
-        margin-top: 22px;
+        margin-top: 10px;
         cursor: pointer;
     }
     button:hover{
@@ -27,6 +27,8 @@
     span{
         display: inherit;
         gap: inherit;
+        align-items: flex-end;
+        gap: 40px;
     }
 
     .account_info{
@@ -35,31 +37,100 @@
         text-decoration: none;
         gap: 10px;
 
+        .field{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .label{
-            width: 120px;
-            font-size: 14px;
+            width: 110px;
+            font-size: 12px;
         }
         input{
             padding: 3px;
+            height: 25px;
             width: 220px;
+            border: none;
+            font-size: 12px;
+            border-bottom: 1px solid lightgray;
         }
+        
+        input:hover, input:focus{
+            outline: none;
+        }
+        #password_field{
+            display: flex;
+            border: none;
+            border-bottom: 1px solid lightgray;
+            justify-content: space-between;
+            .input_field{
+              flex:1;
+              border: none
+            }
+            .input_field::placeholder{
+                font-size: 12px;
+            }
+            .toggle_visible{
+              width: 25px;
+              height: 25px;
+              border: none;
+              border-radius: 100%;
+              padding: 2px;
+              filter: invert(29%) sepia(0%) saturate(4830%) hue-rotate(315deg) brightness(119%) contrast(91%);
+            }
+            .toggle_visible:hover{
+                background-color: #fff;
+            }
+          }
         
     }
     .person_info{
         gap: 10px;
         display: flex;
         flex-direction: column;
+
+        .field{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .label{
-            width: 120px;
-            font-size: 14px;
+            width: 110px;
+            font-size: 12px;
         }
         input{
             padding: 3px;
             width: 220px;
+            border: none;
+            font-size: 12px;
+            border-bottom: 1px solid lightgray;
+        }
+        
+        input:hover, input:focus{
+            outline: none;
         }
         .address_line{
             width: 580px;
+            border: none;
+            border-bottom: 1px solid lightgray;
         }
+        label{
+            margin-top: 10px;
+            font-size: 12px;
+            display: inherit;
+            gap: 10px;
+            .checkPass{
+                justify-content: start;
+                width: 12px;
+                align-items: flex-start;
+            }
+        }
+        .dropdown-container{
+            font-size: 12px;
+        }
+        
     }
     .person_not_found{
         gap: 10px;

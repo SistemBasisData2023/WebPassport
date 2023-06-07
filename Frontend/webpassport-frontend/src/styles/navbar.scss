@@ -12,6 +12,17 @@
     color: white;
     z-index: 999;
 
+    .icon{
+      height: 24px;
+      width: 24px;
+      padding: 2px;
+      border-radius: 100%;
+    }
+
+    .icon:hover{
+      background-color: rgba(255,255,255,0.5);
+      cursor: pointer;
+    }
 
 
     .left {
@@ -62,29 +73,21 @@
         height: 24px;
         width: 24px;
       }
+      span{
+        height: 24px;
+      }
+
+      
 
       .user {
         display: flex;
         align-items: center;
         gap: 10px;
         font-weight: 500;
-        color: white;
-
-        
-
-        
-        
+        color: white; 
       } 
       .user:visited, user:active{
         color: white;
-      }
-      .logout{
-        height: 24px;
-        width: 24px;
-      }
-
-      .logout:hover{
-        cursor: pointer;
       }
     }
   

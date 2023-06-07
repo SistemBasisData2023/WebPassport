@@ -1,4 +1,22 @@
 .home{
     padding: 30px;
     display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .listRequest{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .request_field{
+            display: flex;
+            flex-direction: column;
+            border: 2px solid lightgray;
+            padding: 10px;
+            border-radius: 10px;
+            min-width: 70vw;
+        }
+    }
+
 }

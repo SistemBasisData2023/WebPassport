@@ -1,0 +1,36 @@
+.Admin{
+    padding: 30px;
+    display: flex;
+    width: 100vw;
+    .left{
+        display: flex;
+        width: 50vw;
+    }
+    .right{
+        display: flex;
+        flex-direction: column;
+        width: 40vw;
+        gap: 20px;
+        .office_info{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            span{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .request_list{
+                border: 1px solid lightgray
+                
+                
+            }
+            th{
+                border-bottom: 1px solid lightgray;
+            }
+        }
+    }
+}

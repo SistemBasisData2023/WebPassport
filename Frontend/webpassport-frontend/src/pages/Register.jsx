@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/register.scss"
@@ -13,6 +13,10 @@ const Register = () => {
     const [isRevealedPassword, setIsRevealedPassword] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() =>{
+        sessionStorage.clear();
+    },[])
 
     const handleUsernameChange = (event) =>{
         setUsername(event.target.value);
@@ -50,7 +54,7 @@ const Register = () => {
         <div className="register">
             <div className="card">
                 <div className="left">
-                    <h1>Register</h1>
+                    <h1>Registrasi</h1>
                     <form onSubmit={handleSubmit}>
                         <input className="input_field" placeholder="Username" type="text" 
                             name="username" value={username} onChange={handleUsernameChange}/>
@@ -64,7 +68,7 @@ const Register = () => {
                             <img className="toggle_visible" title={isRevealedPassword ? "Hide Password" : "Show Password"} 
                             src={isRevealedPassword ? hidePassword:showPassword} onClick={() => setIsRevealedPassword(prevState => !prevState)}></img>
                         </div>
-                        <button type="submit">Register</button>
+                        <button type="submit">Registrasi</button>
                     </form>
                 </div>
                 <div className="right">
@@ -73,7 +77,7 @@ const Register = () => {
                         Atque quibusdam omnis aliquam adipisci asperiores nesciunt neque consectetur temporibus! 
                         Recusandae optio quas doloribus facilis id eligendi, deleniti sit inventore.
                     </p>
-                    <span>Already Have Account?</span>
+                    <span>Sudah Punya Akun?</span>
                     <Link to="/login"><button>Login</button></Link>
                     
                 </div>
