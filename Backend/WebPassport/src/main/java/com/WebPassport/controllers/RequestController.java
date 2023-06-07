@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,4 +67,28 @@ public class RequestController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/{request_id}/update")
+    public ResponseEntity<?> updateRequest(
+            @PathVariable int request_id,
+            @RequestParam(required = false) String schedule,
+            @RequestParam(required = false) String status){
+        try{
+            List<RequestEntity> requestEntityList = requestRepository.findById(request_id);
+            if(requestEntityList.isEmpty()){
+                return new ResponseEntity<>("Request Not Found", HttpStatus.NO_CONTENT);
+            }
+            RequestEntity currentRequest = requestEntityList.get(0);
+            RequestEntity requestEntityUpdate = requestRepository
+                    .updateAndReturnRequestEntity(
+                            request_id,
+                            schedule == null ? currentRequest.schedule : schedule,
+                            status == null ? currentRequest.status : status);
+            Request requestUpdate = objectMapper.mapToRequest(requestEntityUpdate);
+            return new ResponseEntity<>(requestUpdate, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

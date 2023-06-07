@@ -6,14 +6,14 @@ import com.WebPassport.repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Service
 public class AddressService implements AddressRepository {
 
     public JdbcTemplate jdbcTemplate;
@@ -39,7 +39,7 @@ public class AddressService implements AddressRepository {
 
     @Override
     public List<Address> findByCity(String city) {
-        return jdbcTemplate.query(AddressQuery.FIND_BY_CITY, this::mapRowToAddress, city);
+        return jdbcTemplate.query(AddressQuery.FIND_BY_CITY, this::mapRowToAddress, new String[]{"%"+city+"%"});
     }
 
     @Override

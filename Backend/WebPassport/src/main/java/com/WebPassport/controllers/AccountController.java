@@ -17,7 +17,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +59,11 @@ public class AccountController {
         }
     }
 
+    @GetMapping("/{account_id}/info")
+    public ResponseEntity<?> getAccountById(@PathVariable int account_id){
+        return new ResponseEntity<>(objectMapper.mapToAccount(accountRepository.findById(account_id)), HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> loginAccount(
             @RequestParam(required = false) String identity,
@@ -93,7 +97,9 @@ public class AccountController {
             if (accountList.isEmpty())
                 return new ResponseEntity<>(accountList, HttpStatus.NO_CONTENT);
 
-            return new ResponseEntity<>(accountList, HttpStatus.OK);
+            Account authenticatedAccount = accountList.get(0);
+
+            return new ResponseEntity<>(authenticatedAccount, HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -204,7 +210,8 @@ public class AccountController {
                     (phoneNumber == null ? currentAccount.phoneNumber : phoneNumber),
                     (password == null ? currentAccount.password : encryptedPass));
             AccountEntity _accountEntity = accountRepository.updateAndReturnAccountEntity(account_id, accountEntity);
-            return  new ResponseEntity<>(_accountEntity, HttpStatus.CREATED);
+            Account _account = objectMapper.mapToAccount(_accountEntity);
+            return  new ResponseEntity<>(_account, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

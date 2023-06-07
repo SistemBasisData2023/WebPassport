@@ -5,7 +5,7 @@ public class AddressQuery {
     public static final String FIND_BY_ID = "SELECT * FROM Address WHERE address_id = ?";
     public static final String FIND_BY_ADDRESS_LINE = "SELECT * FROM Address WHERE address_line = ?";
     public static final String FIND_BY_SUBDISTRICT = "SELECT * FROM Address WHERE sub_district = ?";
-    public static final String FIND_BY_CITY = "SELECT * FROM Address WHERE city = ?";
+    public static final String FIND_BY_CITY = "SELECT * FROM Address WHERE city LIKE ?";
     public static final String FIND_BY_PROVINCE = "SELECT * FROM Address WHERE province = ?";
     public static final String FIND_BY_POSTCODE = "SELECT * FROM Address WHERE postcode = ?";
     public static final String SAVE = "INSERT INTO Address"

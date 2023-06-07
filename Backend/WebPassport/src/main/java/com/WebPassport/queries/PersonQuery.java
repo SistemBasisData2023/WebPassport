@@ -1,10 +1,16 @@
 package com.WebPassport.queries;
 
 public class PersonQuery {
-    public static final String FIND_ALL = "SELECT * FROM Person";
-    public static final String FIND_BY_ID = "SELECT * FROM Person WHERE person_id = ?";
-    public static final String FIND_BY_ACCOUNT_ID = "SELECT * FROM Person WHERE account_id = ?";
-    public static final String FIND_BY_ADDRESS_ID = "SELECT * FROM Person WHERE address_id = ?";
+    public static final String FIND_ALL = "SELECT person_id, account_id, address_id, name, nik, " +
+            "to_char(date_of_birth, 'YYYY-MM-DD') as date_of_birth, place_of_birth, gender FROM Person";
+    public static final String FIND_BY_ID = "SELECT person_id, account_id, address_id, name, nik, " +
+            "to_char(date_of_birth, 'YYYY-MM-DD') as date_of_birth, place_of_birth, gender FROM Person WHERE person_id = ?";
+    public static final String FIND_BY_ACCOUNT_ID = "SELECT person_id, account_id, address_id, name, " +
+            "nik, to_char(date_of_birth, 'YYYY-MM-DD') as date_of_birth, place_of_birth, gender FROM Person WHERE account_id = ?";
+    public static final String FIND_BY_ADDRESS_ID = "SELECT person_id, account_id, address_id, name, nik, " +
+            "to_char(date_of_birth, 'YYYY-MM-DD') as date_of_birth, place_of_birth, gender FROM Person WHERE address_id = ?";
+    public static final String FIND_BY_REQUEST_ID = " SELECT * FROM Person WHERE person_id IN " +
+            "(SELECT person_id FROM REQUEST WHERE request_id = ?)";
     public static final String SAVE = "INSERT INTO Person "
             + " (person_id, account_id, address_id, name, nik, date_of_birth, place_of_birth, gender)"
             + " VALUES (DEFAULT, ?, ?, ?, ?, to_date(?, 'YYYY-MM-DD'), ?, ?::gender)";

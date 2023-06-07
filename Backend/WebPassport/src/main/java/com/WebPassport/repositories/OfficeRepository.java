@@ -8,6 +8,8 @@ public interface OfficeRepository {
     List<OfficeEntity> findAllOffice();
     List<OfficeEntity> findById(int office_id);
     List<OfficeEntity> findByAddress_id(int address_id);
+    List<OfficeEntity> findByAddress_city(String city);
+    List<OfficeEntity> findByRequest_id(int request_id);
     int save(OfficeEntity officeEntity);
     int saveAndReturnId(OfficeEntity officeEntity);
     OfficeEntity saveAndReturnOffice(OfficeEntity officeEntity);

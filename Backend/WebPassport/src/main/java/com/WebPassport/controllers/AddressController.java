@@ -61,4 +61,23 @@ public class AddressController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAddress(
+            @RequestParam int address_id,
+            @RequestParam(required = false) String address_line,
+            @RequestParam(required = false) String subDistrict,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String province,
+            @RequestParam(required = false) String postCode
+    ){
+        try{
+            Address address = addressRepository.updateAndReturnAddress(address_id,
+                    new Address(address_line, subDistrict, city, province, postCode));
+            return new ResponseEntity<>(address, HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

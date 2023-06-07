@@ -32,7 +32,9 @@ public class OfficeController {
     @GetMapping("/")
     public ResponseEntity<?> getOffice(
             @RequestParam(required = false) Integer office_id,
-            @RequestParam(required = false) Integer address_id
+            @RequestParam(required = false) Integer address_id,
+            @RequestParam(required = false) Integer request_id,
+            @RequestParam(required = false) String city
     ){
         try {
             List<OfficeEntity> officeEntityList = new ArrayList<>();
@@ -40,6 +42,10 @@ public class OfficeController {
                 officeEntityList.addAll(officeRepository.findById(office_id));
             else if(address_id != null)
                 officeEntityList.addAll(officeRepository.findByAddress_id(address_id));
+            else if(request_id != null)
+                officeEntityList.addAll(officeRepository.findByRequest_id(request_id));
+            else if(city != null)
+                officeEntityList.addAll(officeRepository.findByAddress_city(city));
             else
                 officeEntityList.addAll(officeRepository.findAllOffice());
 
@@ -69,11 +75,11 @@ public class OfficeController {
     ){
         try {
             Address _address = new Address(address_line, subDistrict, city, province, postCode);
-            addressRepository.save(_address);
+            int address_id = addressRepository.saveAndReturnId(_address);
 
             OfficeEntity officeEntity = officeRepository.saveAndReturnOffice(
                     new OfficeEntity(
-                            addressRepository.findByAddress_line(_address.address_line).get(0).getAddress_id(),
+                            addressRepository.findById(address_id).get(0).getAddress_id(),
                             name));
             Office office = objectMapper.mapToOffice(officeEntity);
             return new ResponseEntity<>(office, HttpStatus.CREATED);

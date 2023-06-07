@@ -1,21 +1,19 @@
 package com.WebPassport.services;
 
 import com.WebPassport.entities.DocumentsEntity;
-import com.WebPassport.entities.OfficeEntity;
 import com.WebPassport.queries.DocumentsQuery;
-import com.WebPassport.queries.OfficeQuery;
 import com.WebPassport.repositories.DocumentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Service
 public class DocumentsService implements DocumentsRepository {
     public JdbcTemplate jdbcTemplate;
 

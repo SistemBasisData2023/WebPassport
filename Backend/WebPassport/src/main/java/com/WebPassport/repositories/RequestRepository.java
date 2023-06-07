@@ -14,5 +14,6 @@ public interface RequestRepository {
     int saveAndReturnId(RequestEntity requestEntity);
     RequestEntity saveAndReturnRequestEntity(RequestEntity requestEntity);
     RequestEntity updateAndReturnRequestEntity(int request_id, String schedule, String status);
+
     int delete(int request_id);
 }

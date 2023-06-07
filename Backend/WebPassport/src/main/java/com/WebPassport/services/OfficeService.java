@@ -6,14 +6,14 @@ import com.WebPassport.repositories.OfficeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Service
 public class OfficeService implements OfficeRepository {
 
     public JdbcTemplate jdbcTemplate;
@@ -36,6 +36,16 @@ public class OfficeService implements OfficeRepository {
     @Override
     public List<OfficeEntity> findByAddress_id(int address_id) {
         return jdbcTemplate.query(OfficeQuery.FIND_BY_ADDRESS_ID, this::mapRowToOfficeEntity, address_id);
+    }
+
+    @Override
+    public List<OfficeEntity> findByAddress_city(String city) {
+        return jdbcTemplate.query(OfficeQuery.FIND_BY_ADDRESS_CITY, this::mapRowToOfficeEntity, new String[]{"%"+city+"%"});
+    }
+
+    @Override
+    public List<OfficeEntity> findByRequest_id(int request_id) {
+        return jdbcTemplate.query(OfficeQuery.FIND_BY_REQUEST_ID, this::mapRowToOfficeEntity, request_id);
     }
 
     @Override

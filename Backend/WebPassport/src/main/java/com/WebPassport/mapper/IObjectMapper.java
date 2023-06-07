@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 @Repository
 public class IObjectMapper implements ObjectMapper{
@@ -32,6 +33,7 @@ public class IObjectMapper implements ObjectMapper{
     @Override
     public Person mapToPerson(PersonEntity personEntity){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Person person =  new Person(
                     personEntity.person_id,
@@ -95,9 +97,11 @@ public class IObjectMapper implements ObjectMapper{
     @Override
     public Request mapToRequest(RequestEntity requestEntity) throws ParseException {
         Documents documents = mapToDocuments(documentsRepository.findByDocument_id(requestEntity.document_id).get(0));
+        SimpleDateFormat timestampSDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        timestampSDF.setTimeZone(TimeZone.getTimeZone("UTC"));
         return new Request(requestEntity.request_id, documents,
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(requestEntity.timestamp),
-                new SimpleDateFormat("yyyy-MM-dd").parse(requestEntity.schedule),
+                timestampSDF.parse(requestEntity.timestamp),
+                timestampSDF.parse(requestEntity.schedule),
                 Request.Status.valueOf(requestEntity.status));
     }
 }
