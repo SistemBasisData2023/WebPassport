@@ -12,6 +12,8 @@ public interface FileRepository {
     FileEntity saveAndReturnFileEntity(MultipartFile file) throws IOException;
     List<FileEntity> findById(String files_id);
     List<FileEntity> findAllFiles();
+    List<FileEntity> findByIdNoData(String files_id);
+    List<FileEntity> findAllFilesNoData();
     FileEntity updateAndReturnFileEntity(String files_id, MultipartFile file) throws IOException;
     int delete(String files_id);
 }

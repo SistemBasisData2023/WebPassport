@@ -82,6 +82,16 @@ public class FileService implements FileRepository {
     }
 
     @Override
+    public List<FileEntity> findByIdNoData(String files_id) {
+        return jdbcTemplate.query(FileQuery.FIND_BY_ID_NO_DATA, this::mapToFileEntity, files_id);
+    }
+
+    @Override
+    public List<FileEntity> findAllFilesNoData() {
+        return jdbcTemplate.query(FileQuery.FIND_ALL_NO_DATA, this::mapToFileEntity);
+    }
+
+    @Override
     public FileEntity updateAndReturnFileEntity(String files_id, MultipartFile file) throws IOException {
         FileEntity fileEntity = new FileEntity();
         fileEntity.name = StringUtils.cleanPath(file.getOriginalFilename());

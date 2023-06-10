@@ -89,8 +89,8 @@ public class IObjectMapper implements ObjectMapper{
 
     @Override
     public Documents mapToDocuments(DocumentsEntity documentsEntity) {
-        Files ktp_files = fileRepository.findById(documentsEntity.ktp_files_id).stream().map(FileController::mapToFiles).toList().get(0);
-        Files kk_files = fileRepository.findById(documentsEntity.kk_files_id).stream().map(FileController::mapToFiles).toList().get(0);
+        Files ktp_files = fileRepository.findByIdNoData(documentsEntity.ktp_files_id).stream().map(FileController::mapToFiles).toList().get(0);
+        Files kk_files = fileRepository.findByIdNoData(documentsEntity.kk_files_id).stream().map(FileController::mapToFiles).toList().get(0);
         return new Documents(documentsEntity.document_id, ktp_files, kk_files);
     }
 
