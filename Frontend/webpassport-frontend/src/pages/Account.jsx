@@ -192,6 +192,7 @@ const Account = () =>{
 
     return(
         <div className="account">
+            <h5>Informasi Akun</h5>
             <div className="account_info">
                 <span>
                     <div className="field">
@@ -302,7 +303,7 @@ const Account = () =>{
                             </div>
                         </span>
                         {!visible &&
-                        <div style={{display: "flex", flexDirection: "column"}}>
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                             <span>
                                 <button onClick={handleEditClick}>Edit Account Information</button>
                             </span>

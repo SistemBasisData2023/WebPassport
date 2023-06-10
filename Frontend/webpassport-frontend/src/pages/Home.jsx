@@ -6,7 +6,7 @@ import RequestDetails from "./RequestDetails";
 import Pagination from "../components/Pagination";
 import { useNavigate } from "react-router-dom";
 
-let PageSize = 4;
+let PageSize = 3;
 
 const Home = () =>{
     const [currentPage, setCurrentPage] = useState(1);
@@ -51,10 +51,35 @@ const Home = () =>{
                         setCurrentRequest(request)
                         setshowRequestDetails(true)
                     }}>
-                        <p>Time Created: {request.timestamp.split('+')[0]}</p>
-                        <p>Schedule Date: {(request.schedule.split('+')[0]).split('T')[0]}</p>
-                        <p>Schedule Time: {(request.schedule.split('+')[0]).split('T')[1]}</p>
-                        <p>Status: {request.status}</p>
+                        <div className="detailsList">
+                            <span>
+                                <h5>Request ID </h5>:
+                                <p>{request.request_id}</p>
+                            </span>
+                            <span>
+                                <h5>Date Created </h5>:
+                                <p>
+                                    {`${((request.timestamp.split('+')[0]).split('T'))[0] }`}
+                                </p>
+                            </span>
+                            <span>
+                                <h5>Time Created </h5>:
+                                <p>
+                                    {`${(((request.timestamp.split('+')[0]).split('T'))[1]).split('.')[0] }`}
+                                </p>
+                            </span>
+                            <span>
+                                <h5>Request Schedule</h5>:
+                                <p>
+                                    {`${((request.schedule.split('+')[0]).split('T'))[0] } - 
+                                    ${(((request.schedule.split('+')[0]).split('T'))[1]).split('.')[0] }`}
+                                </p>
+                            </span>
+                            <span>
+                                <h5>Request Status</h5>:
+                                <h5 className={`status ${request.status}`}>{request.status}</h5>
+                            </span>      
+                        </div>
                 </div>)
             )}
                     </div>

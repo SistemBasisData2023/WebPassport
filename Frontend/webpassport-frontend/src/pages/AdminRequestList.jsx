@@ -5,7 +5,7 @@ import RequestDetails from "./RequestDetails";
 import axios from "axios";
 import "../styles/adminRequestList.scss"
 
-let PageSize = 10;
+let PageSize = 20;
 
 const AdminRequestList = () =>{
     const [currentPage, setCurrentPage] = useState(1);

@@ -1,28 +1,74 @@
 .leftbar {
-    background-color: black;
+    background-color: rgba(0,0,0,0.9);
     color: white;
-    width: max(20vw, 200px);
+    width: max(30vw, 200px);
     min-height: 94vh;
     max-height: 102vh;
-    padding: 5px 0;
+    padding: 40px 1vw;
     position: sticky;
     top: 48px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   
     .list {
       list-style-type: none;
       padding: 0;
       margin: 0;
-  
-      li {
-        padding: 10px;
-        cursor: pointer;
-  
-        &:hover {
-          background-color: #e5e5e5;
-          color: black;
-          transition: background-color, 0.5s;
+      display: flex;
+      flex-direction: column;
+      
+      .contact{
+        display: flex;
+        span{
+          display: flex;
+          align-items: center;
+          gap: 10%;
+          padding: 5% 10%;
+          h5{
+            font-size: 16px;
+          }
+        }
+        &:hover{
+          background-color: #72727278;
+          transition: background-color, 0.2s;
+          cursor: pointer;
+        }
+        .list{
+          display: flex;
+          flex-direction: column;
+          padding-left: 20px;
         }
       }
+      .faq{
+        display: flex;
+        span{
+          display: flex;
+          align-items: center;
+          gap: 10%;
+          padding: 5% 10%;
+          h5{
+            font-size: 16px;
+          }
+        }
+        &:hover{
+          background-color: #72727278;
+          transition: background-color, 0.2s;
+          cursor: pointer;
+        }
+        .list{
+          display: flex;
+          flex-direction: column;
+          padding-left: 20px;
+        }
+      }
+    }
+    .footer{
+      padding: 0 10% 0 10%;
+      h5{
+        font-size: 16px;
+      }
+      
     }
   }

@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
-import './App.css'
+import './App.scss'
 
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
@@ -18,18 +18,20 @@ import AdminRequestList from './pages/AdminRequestList';
 function App() {
 
   const { currentAccount, admin } = useContext(AuthContext);
-  const [displayleftBar, setdisplayleftBar] = useState(false)
+  const [isLeftBarOpen, setIsLeftBarOpen] = useState(true);
 
   const Layout = ()=>{
     return(
       <div>
         <Navbar/>
-        <div className='root' style={{display: "flex"}}>
-          <div className='leftbar' style={{display: "flex", alignItems: "center", height: "90vh", position: "sticky", top: "48px"}}>
-            {displayleftBar && <Leftbar/>}
-            <button className='toogleLeftbar' onClick={() => setdisplayleftBar(!displayleftBar)}
-              style={{height: "max(4vh, 30px)", width: "max(2vw, 20px)"}}>
-              {displayleftBar ?  "<" : ">"}</button>
+        <div className={`root `}>
+          <div className={`left ${isLeftBarOpen ? 'open' : ''}`}>
+            <div className='leftBar'>
+              <Leftbar/>
+            </div>
+            <button className='toggleLeftbar' onClick={() => setIsLeftBarOpen(!isLeftBarOpen)}>
+              {isLeftBarOpen ? ">": "<"}
+            </button>
           </div>
           
           <Outlet/>

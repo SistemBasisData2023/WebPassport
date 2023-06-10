@@ -14,6 +14,29 @@
             display: flex;
             justify-content: center;
         }
+        .detailsList{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            h5{
+                width: 25%;
+            }
+            span{
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .status.PENDING{
+                color: orange;
+            }
+            .status.ACCEPTED{
+                color: green;
+            }
+            .status.DECLINED{
+                color: red;
+            }
+        }
         .button-bottom{
             display: flex;
             justify-content: space-around;
