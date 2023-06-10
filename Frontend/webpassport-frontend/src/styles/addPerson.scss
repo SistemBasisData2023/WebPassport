@@ -1,55 +1,99 @@
 .addPerson{
-    padding: 30px;
+    padding: 3vh 3vw;
+    width: 80vw;
     gap: 10px;
     display: flex;
     flex-direction: column;
-    #button-bottom {
-        width: 200px;
+    overflow-y: auto;
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-transition-delay: 9999s;
+        transition-delay: 9999s;
+    }
+    
+    form{
+        display: inherit;
+        flex-direction: inherit;
+        gap: 4vh
+    }
+    .button-bottom {
+        width: 30vw;
         padding: 5px;
         border: none;
         border-radius: 3px;
-        background-color: rgb(40, 82, 122);
         color: white;
         font-weight: bold;
         margin-top: 10px;
         cursor: pointer;
     }
-    #button-bottom:hover{
+    
+    .button-bottom.oke{
+        background-color: lightgreen;
+    }
+    .button-bottom.cancel{
+        background-color: rgb(255, 80, 80);
+    }
+    .button-bottom:hover{
         color: white;
         background-color: rgb(138, 196, 208);
         transition: background-color, 0.5s;
+    }
+    .field{
+        display: flex; 
+        width: max(35vw, 300px);
+        align-items: center;
+        gap: 1vw;
+    }
+    .field.address{
+        width: max(50vw, 500px);
     }
 
     .person_info{
         display: flex;
         flex-direction: column;
         gap: 30px;
+        width: 60vw;
+
+
         span{
             display: flex;
             flex-direction: row;
-            gap: 10px;
+            gap: 1vw;
+            @media screen and (max-width: 800px){
+                flex-direction: column;
+                gap: 2vh;
+              }
+            
         }
 
         .label{
-            width: 120px;
-            font-size: 14px;
+            width: max(13vw, 50px);
+            font-size: clamp(9px, 1.5vw, 12px);
         }
         input{
             padding: 3px;
-            width: 220px;
+            width: max(20vw, 180px);
         }
 
         .react-datepicker-wrapper {
             display: inline-block;
             padding: 0;
             border: 0;
-            width: 220px;
+            width: max(20vw, 180px);
         }
         .address_line{
-            width: 580px;
+            width: max(35vw, 180px);
         }
         .dropdown-container{
             font-size: 14px;
         }
+        .button{
+            display: inherit;
+            flex-direction: row;
+        }
     }
+    
 }

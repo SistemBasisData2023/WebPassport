@@ -1,18 +1,26 @@
 .account{
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    width: 80vw;
-    gap: 30px;
+    padding: 3vh 3vw;
+    width: 70vw;
+    gap: 7vh;
     overflow-x: hidden;
     overflow-y: auto;
 
+    .button.submit{
+        background-color: lightgreen;
+    }
+    .button.submit:hover{
+        background-color: rgb(138, 196, 208);
+        transition: background-color, 0.5s;
+    }
     button {
-        width: 200px;
+        width: 30vw;
         padding: 5px;
         border: none;
         border-radius: 3px;
-        background-color: rgb(40, 82, 122);
+        background-color: #f72d45;
+        font-size: clamp(7px, 1.5vw, 12px);;
         color: white;
         font-weight: bold;
         margin-top: 10px;
@@ -24,36 +32,42 @@
         transition: background-color, 0.5s;
     }
     
+    
     span{
         display: inherit;
         gap: inherit;
         align-items: flex-end;
-        gap: 40px;
+        gap: 2vw;
     }
 
     .account_info{
         display: flex;
         flex-direction: column;
         text-decoration: none;
-        gap: 10px;
+        gap: 15px;
 
         .field{
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 1vw;
         }
 
         .label{
-            width: 110px;
-            font-size: 12px;
+            width: 10vw;
+            font-size: clamp(7px, 1.5vw, 12px);
         }
         input{
             padding: 3px;
             height: 25px;
-            width: 220px;
+            width: max(20vw, 100px);
             border: none;
-            font-size: 12px;
+            font-size: clamp(7px, 1.5vw, 12px);
             border-bottom: 1px solid lightgray;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         
         input:hover, input:focus{
@@ -64,16 +78,17 @@
             border: none;
             border-bottom: 1px solid lightgray;
             justify-content: space-between;
+            width: max(16vw, 100px);
             .input_field{
               flex:1;
-              border: none
+              border: none;
+              font-size: clamp(7px, 1.5vw, 12px);
             }
             .input_field::placeholder{
-                font-size: 12px;
+                font-size: clamp(7px, 1.5vw, 12px);
             }
             .toggle_visible{
-              width: 25px;
-              height: 25px;
+              width: 1.5vw;
               border: none;
               border-radius: 100%;
               padding: 2px;
@@ -86,39 +101,44 @@
         
     }
     .person_info{
-        gap: 10px;
+        gap: 15px;
         display: flex;
         flex-direction: column;
 
         .field{
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
         }
 
         .label{
-            width: 110px;
-            font-size: 12px;
+            width: 10vw;
+            font-size: clamp(7px, 1.5vw, 12px);
         }
         input{
             padding: 3px;
-            width: 220px;
+            width: 17vw;
             border: none;
-            font-size: 12px;
+            font-size: clamp(7px, 1.5vw, 12px);
             border-bottom: 1px solid lightgray;
         }
-        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         input:hover, input:focus{
             outline: none;
         }
         .address_line{
-            width: 580px;
+            width: 51vw;
             border: none;
             border-bottom: 1px solid lightgray;
         }
         label{
             margin-top: 10px;
-            font-size: 12px;
+            font-size: clamp(7px, 1.5vw, 12px);
             display: inherit;
             gap: 10px;
             .checkPass{
@@ -128,7 +148,7 @@
             }
         }
         .dropdown-container{
-            font-size: 12px;
+            font-size: clamp(7px, 1.5vw, 12px);
         }
         
     }

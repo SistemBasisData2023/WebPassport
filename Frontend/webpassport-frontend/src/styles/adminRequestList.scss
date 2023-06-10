@@ -4,7 +4,7 @@ $half-spacing-unit: $base-spacing-unit / 2;
 $color-alpha: black;
 $color-form-highlight: #cfeaff;
 
-.Admin{
+.adminRequestList{
     padding: 10px;
     display: flex;
     width: 100vw;
@@ -65,13 +65,9 @@ $color-form-highlight: #cfeaff;
         text-transform:uppercase;
     }
 
-    #header__id, #header__number{
-        max-width: 9%;
-    }
+    
 
-    #header__city, #header__province{
-        max-width: 12%;
-    }
+    
 
     .paginate{
         display: flex;

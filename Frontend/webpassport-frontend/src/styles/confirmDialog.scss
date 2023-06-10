@@ -1,0 +1,43 @@
+.confirmDialog{
+    .return-content{
+        position: absolute;
+        top: 50%;
+        left: 32%;
+        
+        .dialog{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2vw;
+            gap: 2vh;
+            width: max(30vw, 100px);
+            .button-bottom{
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+                button {
+                    width: 35%;
+                    padding: 5px;
+                    border: none;
+                    border-radius: 3px;
+                    color: white;
+                    //background-color: rgb(40, 82, 122);
+                    
+                    margin-top: 20px;
+                    cursor: pointer;
+                }
+                button:hover{
+                    color: white;
+                    background-color: rgb(138, 196, 208);
+                    transition: background-color, 0.5s;
+                }
+                .button-positive{
+                    background-color: lightgreen;
+                }
+                .button-negative{
+                    background-color: rgb(255, 80, 80);
+                }
+            }
+        }
+    }
+}

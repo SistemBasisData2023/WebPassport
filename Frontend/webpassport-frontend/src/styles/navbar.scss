@@ -8,19 +8,27 @@
     position: sticky;
     overflow-x: hidden;
     top: 0;
-    background-color: rgb(40, 82, 122);
-    color: white;
+    color: #f72d45;
+    background-color: white;
     z-index: 999;
+    box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+
+    span{
+      font-weight: 300;
+      
+    }
 
     .icon{
       height: 24px;
-      width: 24px;
-      padding: 2px;
+      color: #f72d45;
+      padding: 3px;
       border-radius: 100%;
     }
 
     .icon:hover{
-      background-color: rgba(255,255,255,0.5);
+      background-color: #f72d45;
+      color: white;
+      transition: background-color, 0.5s;
       cursor: pointer;
     }
 
@@ -28,24 +36,25 @@
     .left {
       display: flex;
       align-items: center;
-      gap: 30px;
+      gap: 3vw;
 
       span {
-        font-weight: bold;
-        font-size: 20px;
-        color: white;
+        font-weight: 500;
+        font-size: min(3vh, 3vw);
+        //color: #f72d45;
       }
 
       a{
         height: 24px;
-        width: 24px;
+        width: 0;
       }
 
       .search {
         display: flex;
         align-items: center;
+        width: 30vw;
         gap: 10px;
-        border: 1px solid lightgray;
+        border: 1px solid ;
         border-radius: 5px;
         padding: 5px;
 
@@ -53,10 +62,10 @@
           border: none;
           width: 40vw;
           background-color: transparent;
-          color: white;
+          color: #f72d45
         }
         input::placeholder{
-          color: white;
+          color: #f72d45;
         }
         input:hover, input:focus{
           outline: none;
@@ -77,17 +86,16 @@
         height: 24px;
       }
 
-      
-
       .user {
         display: flex;
         align-items: center;
         gap: 10px;
-        font-weight: 500;
-        color: white; 
+        font-weight: 600;
+        font-size: max(12px, 1.2vw);
+        color: #f72d45; 
       } 
       .user:visited, user:active{
-        color: white;
+        color: #f72d45;
       }
     }
   

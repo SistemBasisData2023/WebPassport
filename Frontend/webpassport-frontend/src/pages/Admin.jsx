@@ -3,12 +3,15 @@ import Dropdown from "../components/Dropdown";
 import Pagination from "../components/Pagination";
 import axios from "axios";
 import "../styles/admin.scss"
+import OfficeDetails from "./OfficeDetails";
 
-let PageSize = 10;;
+let PageSize = 10;
 
 const Admin = () =>{
-    const [currentPage, setCurrentPage] = useState(1);
-    const [selectedOfficeID, setSelectedOfficeID] = useState(0)
+    const [currentPage, setCurrentPage] = useState(0);
+    const [selectedOfficeID, setSelectedOfficeID] = useState(0);
+    const [showOfficeDetails, setShowOfficeDetails] = useState(false);
+    const [loading, setloading] = useState(false);
     const [selectedOffice, setSelectedOffice] = useState([{
         office_id: 0,
             name: "",
@@ -40,18 +43,23 @@ const Admin = () =>{
 
     const getOffice = async () =>{
         try{
+            setloading(true)
             const res = await axios.get("http://localhost:8080/office/")
             sessionStorage.setItem("office", JSON.stringify(res.data));
-            setOfficeData(res.data)
+            setOfficeData(res.data);
+            setCurrentPage(2);
+            setloading(false)
             return res.data;
             
         } catch(err){
             console.log(err)
+            setloading(false)
         }
     }
 
     const getOfficeById = async (office_id) =>{
         try{
+            setloading(true)
             const res = await axios.get("http://localhost:8080/office/", {
                 params: {office_id: office_id}
             });
@@ -59,9 +67,11 @@ const Admin = () =>{
             setSelectedOffice(res.data);
             //console.log(selectedOffice);
             //console.log(selectedOffice);
+            setloading(false)
 
         }
         catch (err){
+            setloading(false)
             console.log(err)
         }
     }
@@ -77,10 +87,8 @@ const Admin = () =>{
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
-        return getRequest().slice(firstPageIndex, lastPageIndex);
+        return JSON.parse(JSON.stringify(officeData)).slice(firstPageIndex, lastPageIndex);
       }, [currentPage]);
-
-    
 
 
     const convertedJson = officeData.map(item => {
@@ -92,102 +100,61 @@ const Admin = () =>{
         };
     });
 
+    useEffect(() =>{
+        setCurrentPage(1)
+    },[])
+
     const options = convertedJson;
 
     return(
-        <div className="Admin">
-            <div className="left">
-                <div>
-                    <Dropdown
-                        placeHolder={"Select..."} isSearchable={true}
-                        options={options} onChange={(value) => {
-                            console.log(value.value)
-                            setSelectedOfficeID(value.value);
-                            //console.log(selectedOfficeID);
-                            getOfficeById(value.value);
-                            }}>
-                    </Dropdown> 
+    <div>
+        {!loading && <div className="Admin">
+            <div className="table">
+	            <div className="table-header">
+                    <div id="header__id" className="header__item"><a className="filter__link" href="#">ID</a></div>
+                    <div id="header__name" className="header__item"><a className="filter__link filter__link--number" href="#">Nama</a></div>
+                    <div id="header__address" className="header__item"><a className="filter__link filter__link--number" href="#">Alamat</a></div>
+                    <div id="header__city" className="header__item"><a className="filter__link filter__link--number" href="#">Kota</a></div>
+                    <div id="header__province" className="header__item"><a className="filter__link filter__link--number" href="#">Provinsi</a></div>
+                    <div id="header__number" className="header__item"><a className="filter__link filter__link--number" href="#">Jumlah Request</a></div>
+
                 </div>
+                {currentTableData.map((office) => (
+                
+                    <div className="table-row" onClick={() =>{
+                        console.log(office.office_id);
+                        console.log(showOfficeDetails)
+                        setSelectedOffice(office);
+                        setShowOfficeDetails(true)
+                        }}>		
+                        <div id="header__id" className="table-data">{office.office_id}</div>
+                        <div id="header__name" className="table-data">{office.name}</div>
+                        <div id="header__address" className="table-data">{office.address.address_line}</div>
+                        <div id="header__city" className="table-data">{office.address.city}</div>
+                        <div id="header__province" className="table-data">{office.address.province}</div>
+                        <div id="header__number" className="table-data">{office.requests.length}</div>
+                    </div>
+                ))}
+                
             </div>
-
-            {selectedOffice[0].office_id != 0 ? 
-            <div className="right">
-                <div>
-                    {selectedOffice[0].name}
-                </div>
-                <div className="office_info">
-                    <div>
-                        <span>
-                            <p style={{width: "80px"}}>Address Line</p>:
-                            <p>{selectedOffice[0].address.address_line}</p>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <p style={{width: "80px"}}>Sub District </p>:
-                            <p>{selectedOffice[0].address.subDistrict}</p>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <p style={{width: "80px"}}>City </p>:
-                            <p>{selectedOffice[0].address.city}</p>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <p style={{width: "80px"}}>Province </p>:
-                            <p>{selectedOffice[0].address.province}</p>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <p style={{width: "80px"}}>Post Code </p>:
-                            <p>{selectedOffice[0].address.postCode}</p>
-                        </span>
-                    </div>
-                </div>
-                <div className="request_info">
-                    Request List:       
-                    <div>
-                        <table className="request_list">
-                            <thead>
-                                <tr>
-                                    <th>request_id</th>
-                                    <th>timestamp</th>
-                                    <th>schedule</th>
-                                    <th>status</th>
-                                </tr>           
-                            </thead>
-                            <tbody>
-                            {getRequest().map((request, key) =>(
-                                <tr key={key}>
-                                    <td><p>{request.request_id}</p></td>
-                                    <td><p>{request.timestamp.split('+')[0]}</p></td>
-                                    <td><p>{request.schedule.split('+')[0]}</p></td>
-                                    <td><p>{request.status}</p></td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                        <Pagination
-                            className="pagination-bar"
-                            currentPage={currentPage}
-                            totalCount={getRequest().length}
-                            pageSize={PageSize}
-                            onPageChange={page => setCurrentPage(page)}
-                        />
-                    </div>            
-                </div>
-            </div> 
-                : 
-            <div>
-                Select Office
-            </div>}
-            
-            
-
+            <OfficeDetails open={showOfficeDetails} onClose={()=>setShowOfficeDetails(false)} officeData={selectedOffice}>
+            </OfficeDetails>
+            <div className="paginate">
+                <Pagination
+                    className="pagination-bar"
+                    currentPage={currentPage}
+                    totalCount={officeData.length}
+                    pageSize={PageSize}
+                    onPageChange={page => setCurrentPage(page)}
+                />                            
+            </div>
+        </div>}
+        {loading && 
+        <div style={{width: "100vw", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            LOADING DATA...
         </div>
+        }
+    </div>
     );
 }
 

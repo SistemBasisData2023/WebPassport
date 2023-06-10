@@ -21,53 +21,43 @@ const Navbar = () => {
     setVisible(true)
   }
 
-  
     return (
     <div className="navbar">
       {admin != null ? 
-      <div className="left"> 
-        <span>WebPassport</span>
-        <Link to="/admin" style={{ textDecoration: "none", color: 'white' }}>
+        <div className="left">
+        <span >WEB PASSPORT</span>
+        <Link to={`/admin/${admin.admin_id}`} style={{ textDecoration: "none", color: '#f72d45', width: 0 }}>
             <HomeOutlinedIcon className="icon" />
         </Link>
-        <NotificationsOutlinedIcon className="icon"/>
-        <div className="search">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
-        </div>
       </div> : 
       <div className="left">
-        <span>WebPassport</span>
-        <Link to="/" style={{ textDecoration: "none", color: 'white' }}>
+        <span >WEB PASSPORT</span>
+        <Link to={`/account/${currentAccount.account_id}`} style={{ textDecoration: "none", color: '#f72d45', width: 0 }}>
             <HomeOutlinedIcon className="icon" />
         </Link>
-        <NotificationsOutlinedIcon className="icon"/>
-        <div className="search">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
-        </div>
+      
       </div>}
       {admin != null ? 
       <div className="right">
         <span onClick={openDialog}><LogoutIcon className="icon" /></span>
-        <Link style={{ textDecoration: "none", color: 'white' }}>
+        <Link to={`/admin/${admin.admin_id}/request`} style={{ textDecoration: "none", color: '#f72d45', width: 0 }}>
           <PostAddIcon className="icon"/>
         </Link>
         <div className="user">
-            <Link>
-              <AccountCircleIcon className="icon" style={{ color: 'white' }}/>
+            <Link to={`/admin/${admin.admin_id}`}  style={{width: 0}}>
+              <AccountCircleIcon className="icon" />
             </Link>
           <span>{admin.email}</span>
         </div>
       </div> : 
       <div className="right">
         <span onClick={openDialog}><LogoutIcon className="icon" /></span>
-        <Link to={`account/${currentAccount.account_id}/addrequest`} style={{ textDecoration: "none", color: 'white' }}>
+        <Link to={`account/${currentAccount.account_id}/addrequest`} style={{ textDecoration: "none", color: '#f72d45', width: 0 }}>
           <PostAddIcon className="icon"/>
         </Link>
         <div className="user">
-            <Link to= {`account/${currentAccount.account_id}`}>
-            <AccountCircleIcon className="icon" style={{ color: 'white' }}/>
+            <Link to= {`account/${currentAccount.account_id}/info`} style={{width: 0}}>
+            <AccountCircleIcon className="icon" />
             </Link>
           <span>{currentAccount.email}</span>
       </div>
@@ -76,8 +66,22 @@ const Navbar = () => {
           <DialogTitle style={{padding:"10px 0px", display: "flex", alignItems: "center", justifyContent: "center"}}>LOGOUT </DialogTitle>
           <DialogContentText style={{padding:"10px 0px", fontSize:"12px", display: "flex", alignItems: "center", justifyContent: "center"}} >{"Do you want to logout?"}</DialogContentText>
           <DialogActions style={{padding: "10px 0px", gap:"10px", display: "flex", justifyContent: "center"}}>
-            <button style={{minWidth: "60px", minHeight: "30px", backgroundColor: "rgb(40, 82, 122)", color: "white", border: "none", borderRadius: "5px"}} onClick={logout}>Yes</button>
-            <button style={{minWidth: "60px", minHeight: "30px", backgroundColor: "rgb(40, 82, 122)", color: "white", border: "none", borderRadius: "5px"}} onClick={closeDialog}>No</button>
+            <button style={
+              {
+                minWidth: "60px",
+                minHeight: "30px", 
+                backgroundColor: "rgb(40, 82, 122)", 
+                color: "white", 
+                border: "none", 
+                borderRadius: "5px",                  
+                }} onClick={logout}>Yes</button>
+            <button style={
+              {
+                minWidth: "60px", 
+                minHeight: "30px", 
+                backgroundColor: "#f72d45", 
+                color: "white", border: "none", 
+                borderRadius: "5px"}} onClick={closeDialog}>No</button>
           </DialogActions>
         </Dialog>
     </div>

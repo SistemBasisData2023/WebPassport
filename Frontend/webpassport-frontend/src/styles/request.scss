@@ -1,15 +1,19 @@
 .request{
-    padding: 30px;
+    padding: 3vw 5px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    
+    gap: 3vh;
+    width: 70vw;
+    font-weight: 600;
+    overflow-x: auto;
 
     #button-bottom {
         width: 200px;
         padding: 5px;
         border: none;
         border-radius: 3px;
-        background-color: rgb(40, 82, 122);
+        background-color: #f72d45;
         color: white;
         font-weight: bold;
         margin-top: 10px;
@@ -21,20 +25,32 @@
         transition: background-color, 0.5s;
     }
 
-    .field{
+    form{
         display: flex;
         flex-direction: column;
-        gap:10px;
-    }
-    .label{
-        width: 140px;
-        font-size: 14px;
-    }
-    span{
-        display: flex;
-        flex-direction: column;
-    }
-    .dropdown-container{
-        font-size: 12px;
+        gap: 4vh;
+
+        .field{
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+            padding: 2vh 2vw;
+            border: 1px solid lightgray;
+            border-radius: 10px;
+            h5{
+                font-size: min(12px, 2.2vw);
+            }
+        }
+        .label{
+            width: max(40vw, 140px);
+            font-size: 14px;
+        }
+        span{
+            display: flex;
+            flex-direction: column;
+        }
+        .dropdown-container{
+            font-size: 12px;
+        }
     }
 }

@@ -117,7 +117,7 @@ const Request = () =>{
                 sessionStorage.setItem("account", JSON.stringify(currentAccount));
                 setLoading(false)
                 alert("Request Submit Success");
-                navigate("/")
+                navigate(`/account/${currentAccount.account_id}`)
             }else{
                 alert("Request Submit Failed")
                 setLoading(false)
@@ -147,46 +147,52 @@ const Request = () =>{
         <div>
         {currentAccount.persons[0] != null ? 
             <div className="request">
-                Request Page
-                <span>
-                    <div className="field">
-                        <p className="label">Select Office</p>
-                        <Dropdown
-                            placeHolder={loadingOffice ?  "Loading Office...": "Select..."} isSearchable={true}
-                            disabled={loadingOffice}
-                            options={options} onChange={(value) => setSelectedOfficeID(value.value)}>
-                        </Dropdown>
-                    </div>
-                </span>
-                <span>
-                    <div className="field">
-                    <p className="label">Select Schedule:</p>
-                        <DatePicker showIcon={true} placeholderText="Select Schedule Date"
-                            dateFormat="yyyy-MM-dd hh:mm:ss a" 
-                            selected={startdate} showTimeSelect minDate={new Date()}
-                            onChange={(date) => {
-                                setstartdate(date);
-                                setScheduleDate(formatDate(date));
-                                console.log(startdate);
-                                console.log(scheduleDate);
-                            }}
-                            onCalendarClose={()=>{
-                                setScheduleDate(scheduleDate)
-                                console.log(scheduleDate)
-                            }} />
-                    </div>
-                    
-                </span>
-                <span>
-                    <div style={{display:"flex", gap: "20px"}}><h5>KTP Files: </h5><input name="ktp_files" type="file" onChange={handleKtpFilesSelect}/></div>
-                    <div style={{display:"flex", gap: "20px"}}><h5>KK Files : </h5><input type="file" onChange={handleKkFilesSelect}/></div>
-                </span>
-                <button id="button-bottom" disabled={loading} onClick={handleSubmit}>{loading ? <>Loading... </>: <>Submit</>}</button>    
+                Buat Permohonan
+                <form onSubmit={handleSubmit}>
+                    <span>
+                        <div className="field">
+                            <p className="label">Pilih Kantor Cabang:</p>
+                            <Dropdown
+                                placeHolder={loadingOffice ?  <>Loading Office Data ... </>: "Select..."} isSearchable={true}
+                                disabled={loadingOffice}
+                                options={options} onChange={(value) => setSelectedOfficeID(value.value)}>
+                            </Dropdown>
+                        </div>
+                    </span>
+                    <span>
+                        <div className="field">
+                        <p className="label">Pilih Jadwal:</p>
+                            <DatePicker placeholderText="Select Schedule Date"
+                                showIcon
+                                required
+                                dateFormat="yyyy-MM-dd hh:mm:ss a" 
+                                selected={startdate} showTimeSelect minDate={new Date()}
+                                onChange={(date) => {
+                                    setstartdate(date);
+                                    setScheduleDate(formatDate(date));
+                                    console.log(startdate);
+                                    console.log(scheduleDate);
+                                }}
+                                onCalendarClose={()=>{
+                                    setScheduleDate(scheduleDate)
+                                    console.log(scheduleDate)
+                                }} />
+                        </div>    
+                    </span>
+                    <span>
+                        <div className="field">
+                        <p className="label">Unggah Dokumen:</p>
+                            <div style={{display:"flex", gap: "20px"}}><h6>Upload File KTP: </h6><input name="ktp_files" required type="file" accept="image/*" onChange={handleKtpFilesSelect}/></div>
+                            <div style={{display:"flex", gap: "20px"}}><h6>Upload File KK : </h6><input type="file" required accept="image/*" onChange={handleKkFilesSelect}/></div>
+                        </div>
+                    </span>
+                    <button type="submit" id="button-bottom" disabled={loading}>{loading ? <>Loading... </>: <>Submit</>}</button>  
+                </form>
             </div> 
                 : 
             <div className="request">
-                Anda Harus Mengisi Data Diri Terlebih Dahulu
-                <button onClick={() => {navigate(`/account/${currentAccount.account_id}/addperson`)}}>Isi Data Diri</button>
+                <div>Anda Harus Mengisi Data Diri Terlebih Dahulu</div>
+                <button id="button-bottom" onClick={() => {navigate(`/account/${currentAccount.account_id}/addperson`)}}>Isi Data Diri</button>
             </div>
         }
         </div>

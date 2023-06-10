@@ -95,20 +95,21 @@ const AddPerson = () =>{
     return(
         <div className="addPerson">
             <div className="person_info">Isi Data Diri
+            <form onSubmit={handleSubmit}>
                 <span>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field">
                         <p className="label">Nama Lengkap :</p>
-                        <input name="name" required={true} type="text" value={personInfo.name} onChange={handleChange}/> 
+                        <input name="name" required type="text" value={personInfo.name} onChange={handleChange}/> 
                     </div>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field">
                         <p className="label">NIK: </p>
-                        <input name="nik" type="text" value={personInfo.nik} onChange={handleChange}/> 
+                        <input name="nik" required type="text" value={personInfo.nik} onChange={handleChange}/> 
                     </div>
                     
                     
                 </span>
                 <span>
-                <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                <div className="field">
                     <p className="label">Tanggal Lahir: </p>
                     <DatePicker renderCustomHeader={({
                                 date,changeYear,
@@ -154,18 +155,18 @@ const AddPerson = () =>{
                                         {">"}
                                     </button>
                                     </div>
-                                )} showIcon={true} placeholderText="dd-MM-yyyy"
+                                )} showIcon={true} placeholderText="dd-MM-yyyy" required
                                     dateFormat="dd-MM-yyyy"
                                     selected={personInfo.date_of_birth} maxDate={new Date()} 
                                     onChange={(date) => setPersonInfo({date_of_birth: date})}/>
                 </div>
-                <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                <div className="field">
                     <p className="label">Tempat Lahir: </p>
-                    <input name="place_of_birth" type="text" value={personInfo.place_of_birth} onChange={handleChange}/>
+                    <input name="place_of_birth" type="text" required value={personInfo.place_of_birth} onChange={handleChange}/>
                 </div>
                 </span>
                 <span>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field">
                         <p className="label">Gender: </p>
                         <Dropdown className="dropdown" 
                             placeHolder={"Select..."}
@@ -178,36 +179,38 @@ const AddPerson = () =>{
                     
                 </span>
                 <span>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field address">
                         <p className="label">Alamat: </p>
-                        <input className="address_line" type="text" name="address_line" value={personInfo.address_line} onChange={handleChange}/>
+                        <input className="address_line" required type="text" name="address_line" value={personInfo.address_line} onChange={handleChange}/>
                     </div>
                 </span>
                 <span>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field">
                         <p className="label">Kecamatan: </p>
-                        <input name="subDistrict" type="text" value={personInfo.subDistrict} onChange={handleChange}/>
+                        <input name="subDistrict" required type="text" value={personInfo.subDistrict} onChange={handleChange}/>
                     </div>                   
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
-                        <p className="label">Kota/Kabupaten: </p>
-                        <input name="city" type="text" value={personInfo.city} onChange={handleChange}/>
+                    <div className="field">
+                        <p className="label">Kota/ Kabupaten: </p>
+                        <input name="city" type="text" required value={personInfo.city} onChange={handleChange}/>
                     </div>
                 </span>
                 <span>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field">
                         <p className="label">Provinsi: </p>
-                        <input name="province" type="text" value={personInfo.province} onChange={handleChange}/>
+                        <input name="province" type="text" required value={personInfo.province} onChange={handleChange}/>
                     </div>
-                    <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+                    <div className="field">
                         <p className="label">Kode Pos: </p>
-                        <input name="postCode" type="text" value={personInfo.postCode} onChange={handleChange}/>
+                        <input name="postCode" type="text" required value={personInfo.postCode} onChange={handleChange}/>
                     </div>
                     
                 </span>
-                <span>
-                    <button id="button-bottom" className="cancelSubmitPerson" onClick={cancelSubmit}>Batal</button>
-                    <button id="button-bottom" className="submitPerson" onClick={handleSubmit}>OK</button>
+                <span className="button">
+                    <button className="button-bottom oke" type="submit">OK</button>
+                    <button className="button-bottom cancel" onClick={cancelSubmit}>Batal</button>
                 </span>
+            </form>
+                
                 
             </div> 
         </div>

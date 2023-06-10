@@ -12,7 +12,6 @@
     align-items: center;
     justify-content: space-between;
     user-select: none;
-    max-width: 500px;
     overflow-x: hidden;
   }
   
@@ -20,7 +19,7 @@
     position: absolute;
     transform: translateY(4px);
     min-width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
     border-radius: 5px;
     overflow: auto;
     max-height: 150px;

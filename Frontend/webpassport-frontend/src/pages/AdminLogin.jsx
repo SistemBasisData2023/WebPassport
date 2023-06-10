@@ -34,7 +34,7 @@ const AdminLogin = () => {
             if (res.status === 200){
                 alert("Login Success");
                 console.log(res.data);
-                navigate("/admin")
+                navigate(`/admin/${res.data.admin_id}`)
             }
             else{
                 alert("Login Failed")

@@ -1,8 +1,7 @@
 import { useContext, useState } from 'react'
 import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import './App.css'
-import Login from './pages/Login';
-import Register from './pages/Register';
+
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Account from './pages/Account';
@@ -12,17 +11,27 @@ import Admin from './pages/Admin';
 import AdminLogin from './pages/AdminLogin';
 import { AuthContext } from './context/authContext';
 import Leftbar from './components/LeftBar';
+import RequestDetails from './pages/RequestDetails';
+import Welcome from './pages/Welcome';
+import AdminRequestList from './pages/AdminRequestList';
 
 function App() {
 
   const { currentAccount, admin } = useContext(AuthContext);
+  const [displayleftBar, setdisplayleftBar] = useState(false)
 
   const Layout = ()=>{
     return(
       <div>
         <Navbar/>
-        <div style={{display: "flex"}}>
-          <Leftbar/>
+        <div className='root' style={{display: "flex"}}>
+          <div className='leftbar' style={{display: "flex", alignItems: "center", height: "90vh", position: "sticky", top: "48px"}}>
+            {displayleftBar && <Leftbar/>}
+            <button className='toogleLeftbar' onClick={() => setdisplayleftBar(!displayleftBar)}
+              style={{height: "max(4vh, 30px)", width: "max(2vw, 20px)"}}>
+              {displayleftBar ?  "<" : ">"}</button>
+          </div>
+          
           <Outlet/>
         </div>
       </div>
@@ -43,7 +52,7 @@ function App() {
   const ProtectedRoute = ({ children }) => {
     console.log(currentAccount);
     if (!currentAccount) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/welcome" />;
     }
     return children;
   };
@@ -51,7 +60,7 @@ function App() {
   const AdminRoute = ({ children }) =>{
     console.log(admin)
     if (!admin){
-      return <Navigate to="/login/"/>;
+      return <Navigate to="/welcome/"/>;
     }
     return children
   }
@@ -66,11 +75,11 @@ function App() {
       ),
       children:[
         {
-          path: "/",
+          path: "/account/:id",
           element: <Home/>
         },
         {
-          path: "/account/:id",
+          path: "/account/:id/info",
           element: <Account/>
         },
         {
@@ -79,11 +88,14 @@ function App() {
         },{
           path: "/account/:id/addrequest",
           element: <Request/>
+        },{
+          path: "/request/:id",
+          element: <RequestDetails/>
         }
       ]
     },
     {
-      path: "/admin/",
+      path: "/admin/:id",
       element: (
         <AdminRoute>
           <AdminLayout/>
@@ -91,18 +103,17 @@ function App() {
       ),
       children:[
         {
-          path: "/admin/",
+          path: "/admin/:id",
           element: <Admin/>
+        },{
+          path: "/admin/:id/request",
+          element: <AdminRequestList/>
         }
       ]
     },
     {
-      path: "/login",
-      element: <Login/>
-    },
-    {
-      path: "/register",
-      element: <Register/>
+      path: "/welcome",
+      element: <Welcome/>
     },
     {
       path: "/login/admin",

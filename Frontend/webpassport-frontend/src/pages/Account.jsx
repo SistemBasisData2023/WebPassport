@@ -9,6 +9,8 @@ import { AuthContext } from "../context/authContext";
 import axios from "axios";
 import Dropdown from "../components/Dropdown";
 
+let PageSize = 5;
+
 const Account = () =>{
 
     const { currentAccount, setCurrentAccount } = useContext(AuthContext);
@@ -17,7 +19,9 @@ const Account = () =>{
     const [loading, setLoading] = useState(false);
     const [accountPassword, setAccountPassword] = useState(null);
     const [isRevealedPassword, setIsRevealedPassword] = useState(false);
-    const [enableEditPass, setEnableEditPass] = useState(false)
+    const [enableEditPass, setEnableEditPass] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
 
     const [accountInfo, setAccountInfo] = useState({
         ...currentAccount
@@ -188,7 +192,6 @@ const Account = () =>{
 
     return(
         <div className="account">
-            Account Page
             <div className="account_info">
                 <span>
                     <div className="field">
@@ -246,7 +249,10 @@ const Account = () =>{
                             </div>
                             <div className="field">
                                 <p className="label">NIK </p>:
-                                <input name="nik" value={personInfo.nik} disabled={disable} onChange={handlePersonChange}/>
+                                <input 
+                                    name="nik" type="number"  
+                                    max="16" value={personInfo.nik} 
+                                    disabled={disable} onChange={handlePersonChange}/>
                             </div>
                         </span>
                         <span>
@@ -292,7 +298,7 @@ const Account = () =>{
                             </div>
                             <div className="field">
                                 <p className="label">Post Code </p>:
-                                <input name="postCode" value={personInfo.postCode} disabled={disable} onChange={handlePersonChange}/>
+                                <input name="postCode" type="number" maxLength={6} value={personInfo.postCode} disabled={disable} onChange={handlePersonChange}/>
                             </div>
                         </span>
                         {!visible &&
@@ -310,8 +316,8 @@ const Account = () =>{
                                 Enable Password Edit
                             </label>
                             <span>
-                                <button onClick={toggleCancelEditClick}>Cancel</button>
-                                <button onClick={handleSubmitChange}>{loading ? <>Loading...</> : <>Submit Change</>}</button>
+                                <button onClick={toggleCancelEditClick} disabled={loading}>Cancel</button>
+                                <button className="button submit" onClick={handleSubmitChange} disabled={loading}>{loading ? <>Loading...</> : <>Submit Change</>}</button>
                             </span>
                         </div>}
                     </div> 
