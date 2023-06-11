@@ -26,6 +26,16 @@ public class AdminController {
         this.adminRepository = adminRepository;
     }
 
+
+    @GetMapping("/")
+    public ResponseEntity<?> getAllAdmin(){
+        try{
+            List<Admin> adminList = adminRepository.findAllAdmin();
+            return new ResponseEntity<>(adminList, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PostMapping("/login")
     public ResponseEntity<?> loginAdmin(
             @RequestParam String identity,
