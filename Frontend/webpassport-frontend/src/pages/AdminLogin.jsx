@@ -50,9 +50,7 @@ const AdminLogin = () => {
             <div className="card">
                 <div className="left">
                     <h1>{"Web Passport (Admin Version)"}</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, voluptate? 
-                        Atque quibusdam omnis aliquam adipisci asperiores nesciunt neque consectetur temporibus! 
-                        Recusandae optio quas doloribus facilis id eligendi, deleniti sit inventore.
+                    <p>WebPassport adalah aplikasi yang memudahkan Anda untuk melakukan pemesanan paspor secara online.
                     </p>
                 </div>
                 <div className="right">

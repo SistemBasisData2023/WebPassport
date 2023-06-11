@@ -16,6 +16,7 @@
     width: 0;
     z-index: 800;
     transition: transform 0.5s ease;
+    
 
     .toggleLeftbar{
       height: 15vh;
@@ -30,7 +31,7 @@
     }
     
     &.open {
-      transform: translateX(min(-30vw, -200px));
+      transform: translateX(min(-25vw, -200px));
     }
   }
   

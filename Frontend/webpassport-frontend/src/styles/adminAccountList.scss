@@ -1,0 +1,134 @@
+$base-spacing-unit: 2vh;
+$half-spacing-unit: $base-spacing-unit / 2;
+
+$color-alpha: black;
+$color-form-highlight: #cfeaff;
+
+.adminAccountList{
+    padding: 10px;
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    height: 80vh;
+    flex-direction: column;
+    overflow-y: auto;
+
+    button {
+        width: 40%;
+        padding: 2px;
+        border: none;
+        border-radius: 3px;
+        color: white;
+        background-color: rgb(255, 140, 140);
+        
+        cursor: pointer;
+    }
+    button:hover{
+        color: white;
+        background-color: rgb(255, 0,0);
+        transition: background-color, 0.1s;
+    }
+
+    .container {
+        max-width: 400px;
+        margin-right:auto;
+        margin-left:auto;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100vh;
+    }
+    .table {
+        width:100%;
+        min-width: 1000px;
+        border:1px solid $color-form-highlight;
+    }
+    
+    .table-header {
+        display:flex;
+        width:100%;
+        background:$color-alpha;
+        padding:($half-spacing-unit * 1) 0.5vw;
+        font-size: min(2.5vh, 2.5vw);
+    }
+    
+    .table-row {
+        display:flex;
+        width:100%;
+        padding:($half-spacing-unit * 1) 0.5vw;
+        
+        border: 1px solid;
+        font-size: min(2.5vh, 12px);
+        
+        &:nth-of-type(odd) {
+            background:$color-form-highlight;
+        }
+        p{
+            font-size: min(2.5vh, 12px);
+        }
+    }
+    .table-row:hover{
+        background-color: #fedcdc;
+        cursor: pointer;
+    }
+    
+    .table-data, .header__item {
+        flex: 1 1 30%;
+        text-align:center;
+        padding: 0 2px;
+    }
+    
+    .header__item {
+        text-transform:uppercase;
+    }
+
+    
+
+    
+
+    .paginate{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        height: 12vh;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background-color: white;
+        border-top: 1px solid black;
+    }
+
+
+    
+    
+    .filter__link {
+        color:white;
+        text-decoration: none;
+        position:relative;
+        display:inline-block;
+        padding-left:$base-spacing-unit;
+        padding-right:$base-spacing-unit;
+        
+        &::after {
+            content:'';
+            position:absolute;
+            right:-($half-spacing-unit * 1.5);
+            color:white;
+            font-size:$half-spacing-unit;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        &.desc::after {
+            content: '(desc)';
+        }
+    
+        &.asc::after {
+            content: '(asc)';
+        }
+        
+    }
+
+}

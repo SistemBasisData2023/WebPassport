@@ -44,7 +44,7 @@ const Navbar = () => {
           <PostAddIcon className="icon"/>
         </Link>
         <div className="user">
-            <Link to={`/admin/${admin.admin_id}`}  style={{width: 0}}>
+            <Link to={`/admin/${admin.admin_id}/account`}  style={{width: 0}}>
               <AccountCircleIcon className="icon" />
             </Link>
           <span>{admin.email}</span>

@@ -155,6 +155,7 @@
     align-items: center;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     
 }
 .login-section .form-box.register{
@@ -165,13 +166,17 @@
 .login-section.active .form-box.register{
     transform: translateX(0px);
     transition-delay: .4s;
+    overflow-y: scroll; 
+    padding-right: 2vw;
+    box-sizing: content-box;
     form{
         display: flex;
-        gap: 1vh;
+        gap: 1.7vh;
         flex-direction: column;
         min-width: 80%;
         height: 95%;
         margin-top: 20%;
+       
     }
 }
 
@@ -209,7 +214,8 @@
 }
 .input-box input{
     width: 100%;
-    height: 100%;
+    height: 120%;
+    
     background: transparent;
     border: none;
     outline: none;
@@ -222,7 +228,7 @@
 }
 .input-box label{
     position: absolute;
-    top: 50%;
+    top: 70%;
     left: 0;
     transform: translateY(-50%);
     font-size: 15px;
@@ -239,7 +245,7 @@
 }
 .input-box input:focus~ label,
 .input-box input:valid~ label{
-    top: -2.5px;
+    top: -0.5px;
     font-size: 12px;
 }
 

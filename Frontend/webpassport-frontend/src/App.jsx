@@ -14,6 +14,7 @@ import Leftbar from './components/LeftBar';
 import RequestDetails from './pages/RequestDetails';
 import Welcome from './pages/Welcome';
 import AdminRequestList from './pages/AdminRequestList';
+import AdminAccountList from './pages/AdminAccountList';
 
 function App() {
 
@@ -110,6 +111,9 @@ function App() {
         },{
           path: "/admin/:id/request",
           element: <AdminRequestList/>
+        },{
+          path: "/admin/:id/account",
+          element: <AdminAccountList/>
         }
       ]
     },
