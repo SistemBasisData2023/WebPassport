@@ -159,7 +159,7 @@ This table stores information about files uploaded for the passport application.
 ![UML](Database_UML.png)
 
 ## Database E/R Diagram
-![E/R Diagram]()
+![E/R Diagram](Database_ERD.png)
 
 ## Flowchart
 ![Flowchart](Flowchart.png)
